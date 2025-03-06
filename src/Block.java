@@ -1,13 +1,15 @@
 import java.util.ArrayList;
 import java.awt.Point;
 
-public class Block {
+public abstract class Block {
     ArrayList<Tile> tiles;
-    BlockType blockType;
+    String name;
     Point centreOfMass;
 
-    public Block() {
-        //
+    public Block(String name) {
+        this.name = name;
+        tiles = new ArrayList<>();
+        centreOfMass = new Point(0, 0);
     }
 
     public void placeBlock(Board board) {
@@ -16,5 +18,12 @@ public class Block {
 
     public void removeBlock(Board board) {
         //
+    }
+
+    // more functions
+
+    @Override
+    public String toString() {
+        return "A " + this.name + " Block";
     }
 }
