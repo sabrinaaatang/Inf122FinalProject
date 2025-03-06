@@ -19,7 +19,7 @@ public class Board {
         //
     }
 
-    public void applyMove(TileManipulatorContext action) {
+    public void applyMove(BlockManipulator action) {
         //
     }
     
