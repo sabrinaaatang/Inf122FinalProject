@@ -1,5 +1,9 @@
-import java.util.List;
+import java.util.ArrayList;
 
 public class Multiplayer {
-    private List<Player> players;
+    private ArrayList<Player> players;
+
+    public Multiplayer() {
+        players = new ArrayList<>();
+    }
 }
