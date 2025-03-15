@@ -6,4 +6,8 @@ public class Multiplayer {
     public Multiplayer() {
         players = new ArrayList<>();
     }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }
