@@ -4,6 +4,7 @@ public class BlockManipulatorContext {
     public void setAlgorithm(BlockManipulator algorithm) {
         this.algorithm = algorithm;
     }
+    
     public void performManipulation() {
         this.algorithm.manipulate();
     }
