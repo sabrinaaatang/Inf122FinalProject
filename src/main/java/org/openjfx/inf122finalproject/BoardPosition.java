@@ -1,3 +1,5 @@
+package org.openjfx.inf122finalproject;
+
 public class BoardPosition {
     int x;
     int y;

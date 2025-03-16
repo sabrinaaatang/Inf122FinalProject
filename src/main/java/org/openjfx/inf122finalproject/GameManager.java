@@ -1,3 +1,5 @@
+package org.openjfx.inf122finalproject;
+
 public abstract class GameManager {
 
     void isGameOver() {
@@ -8,7 +10,7 @@ public abstract class GameManager {
 
     }
 
-    void handleInput(PlayerInput input) {
-        
-    }
+//    void handleInput(PlayerInput input) {
+//
+//    }
 }

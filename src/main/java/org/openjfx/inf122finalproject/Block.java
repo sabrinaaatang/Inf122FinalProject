@@ -1,3 +1,5 @@
+package org.openjfx.inf122finalproject;
+
 import java.util.ArrayList;
 import java.awt.Point;
 
