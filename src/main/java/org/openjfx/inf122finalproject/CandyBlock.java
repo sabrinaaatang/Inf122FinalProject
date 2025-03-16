@@ -14,13 +14,20 @@ public class CandyBlock extends Block {
 
     public Color getColor() {
         switch (type) {
-            case RED: return Color.RED;
-            case BLUE: return Color.BLUE;
-            case GREEN: return Color.GREEN;
-            case YELLOW: return Color.YELLOW;
-            case PURPLE: return Color.PURPLE;
-            case ORANGE: return Color.ORANGE;
-            default: return Color.GRAY;
+            case RED:
+                return Color.RED;
+            case BLUE:
+                return Color.BLUE;
+            case GREEN:
+                return Color.GREEN;
+            case YELLOW:
+                return Color.YELLOW;
+            case PURPLE:
+                return Color.PURPLE;
+            case ORANGE:
+                return Color.ORANGE;
+            default:
+                return Color.GRAY;
         }
     }
 }

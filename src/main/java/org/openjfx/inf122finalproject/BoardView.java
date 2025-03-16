@@ -14,7 +14,7 @@ public class BoardView extends Application {
     private static final int TILE_SIZE = 60;
     private static final int BOARD_WIDTH = 10;
     private static final int BOARD_HEIGHT = 10;
-    private static final Color[] COLORS = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.ORANGE};
+//    private static final Color[] COLORS = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.ORANGE};
     private StackPane selectedTile = null; // Keep track of selected tile
     private Rectangle selectedRect = null; // Track selected rectangle
 
@@ -43,13 +43,13 @@ public class BoardView extends Application {
             for (int col = 0; col < BOARD_WIDTH; col++) {
                 Tile tile = new Tile();
 
-                // Generate a random CandyBlock
+                // generate random CandyBlock
                 Candy.CandyType randomCandyType = Candy.CandyType.values()[rand.nextInt(Candy.CandyType.values().length)];
                 CandyBlock block = new CandyBlock(randomCandyType);
                 tile.containingBlock = block;
                 board.grid[row][col] = new BoardPosition(row, col, tile);
 
-                // Create UI tile
+                // create UI tile
                 StackPane tilePane = new StackPane();
                 Rectangle rect = new Rectangle(TILE_SIZE - 1, TILE_SIZE - 1, block.getColor());
 
