@@ -10,19 +10,29 @@ public abstract class Block {
 
     public Block(String name) {
         this.name = name;
-        tiles = new ArrayList<>();
-        centreOfMass = new Point(0, 0);
+        this.tiles = new ArrayList<>();
+        this.centreOfMass = new Point(0, 0);
     }
 
     public void placeBlock(Board board) {
-        //
+        for (Tile tile : tiles) {
+            BoardPosition position = board.findBoardPosition(tile);
+            if (position != null) {
+                position.tile = tile; // Place block on the board
+            }
+        }
+        board.blocks.add(this);
     }
 
     public void removeBlock(Board board) {
-        //
+        tiles.forEach(tile -> {
+            BoardPosition position = board.findBoardPosition(tile);
+            if (position != null) {
+                position.tile = new Tile(); // Clear tile when block is removed
+            }
+        });
+        board.blocks.remove(this);
     }
-
-    // more functions
 
     @Override
     public String toString() {
