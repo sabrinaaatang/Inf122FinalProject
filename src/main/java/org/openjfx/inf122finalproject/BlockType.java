@@ -7,11 +7,8 @@ public abstract class BlockType {
         this.type = type;
     }
 
+    // candy/jewel type...
     public String getType() {
         return type;
     }
-
-    public abstract int[][] getShape();
-
-    public abstract int[][] getRotationStates();
 }

@@ -14,9 +14,9 @@ public class BoardView extends Application {
     private static final int TILE_SIZE = 60;
     private static final int BOARD_WIDTH = 10;
     private static final int BOARD_HEIGHT = 10;
-//    private static final Color[] COLORS = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.ORANGE};
-    private StackPane selectedTile = null; // Keep track of selected tile
-    private Rectangle selectedRect = null; // Track selected rectangle
+
+    private StackPane selectedTile = null;
+    private Rectangle selectedRect = null;
 
     private Board board;
     private GridPane grid;
@@ -41,21 +41,25 @@ public class BoardView extends Application {
 
         for (int row = 0; row < BOARD_HEIGHT; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
-                Tile tile = new Tile();
-
-                // generate random CandyBlock
+                // Generate a CandyBlock
                 Candy.CandyType randomCandyType = Candy.CandyType.values()[rand.nextInt(Candy.CandyType.values().length)];
                 CandyBlock block = new CandyBlock(randomCandyType);
-                tile.containingBlock = block;
-                board.grid[row][col] = new BoardPosition(row, col, tile);
 
-                // create UI tile
+                // Create a Tile and associate it with the block
+                Tile tile = new Tile();
+                tile.containingBlock = block;
+                block.tiles.add(tile); // Store the tile inside the block
+
+                // Store BoardPosition with the Tile inside the board
+                board.grid[row][col] = new BoardPosition(row, col, tile);
+                board.blocks.add(block); // Track block in the board
+
+                // Create UI representation
                 StackPane tilePane = new StackPane();
                 Rectangle rect = new Rectangle(TILE_SIZE - 1, TILE_SIZE - 1, block.getColor());
 
                 tilePane.getChildren().add(rect);
                 tilePane.setOnMouseClicked(event -> highlightTile(tilePane, rect));
-
 
                 grid.add(tilePane, col, row);
             }
@@ -68,7 +72,7 @@ public class BoardView extends Application {
         }
 
         if (selectedTile == tilePane) {
-            selectedTile = null; // Deselect if clicked again
+            selectedTile = null;
             selectedRect = null;
         } else {
             rect.setStroke(Color.BLACK);
