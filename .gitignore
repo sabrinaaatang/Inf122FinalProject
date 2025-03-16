@@ -39,6 +39,17 @@ Inf122FinalProject.iml
 
 .DS_Store
 
+# Compiled classes and build output
+out/
+*.class
+
+# IDE settings
 .idea/
 
-/out/
+# Maven wrapper binaries
+.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+
+# Logs and temporary files
+*.log
