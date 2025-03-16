@@ -1,5 +1,4 @@
-package org.openjfx.demo;
-
+package org.openjfx.inf122finalproject;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
