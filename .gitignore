@@ -35,4 +35,10 @@ build/
 .vscode/
 
 ### Mac OS ###
+Inf122FinalProject.iml
+
 .DS_Store
+
+.idea/
+
+out/

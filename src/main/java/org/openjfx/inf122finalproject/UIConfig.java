@@ -1,4 +1,4 @@
-package org.openjfx.demo;
+package org.openjfx.inf122finalproject;
 
 import java.util.HashMap;
 import java.util.Map;
