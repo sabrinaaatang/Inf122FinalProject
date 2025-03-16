@@ -8,7 +8,7 @@
 <?import javafx.geometry.Insets?>
 <?import java.net.*?>
 
-<GridPane fx:controller="org.openjfx.demo.CandyCrushView"
+<GridPane fx:controller="org.openjfx.inf122finalproject.CandyCrushView"
           xmlns:fx="http://javafx.com/fxml" hgap="2" vgap="2"
           styleClass="root" fx:id="grid">
     <padding>
