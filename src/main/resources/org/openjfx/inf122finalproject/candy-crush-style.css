@@ -5,7 +5,9 @@
 GridPane {
     -fx-alignment: bottom-center;
     -fx-grid-lines-visible: false;
-    -fx-label-padding: 0 5 0 5;
+    /*-fx-label-padding: 0 5 0 5;*/
+    -fx-hgap: 2;
+    -fx-vgap: 2;
 }
 
 #candy_block {

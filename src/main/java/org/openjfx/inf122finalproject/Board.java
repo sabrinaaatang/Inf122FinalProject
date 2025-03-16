@@ -2,6 +2,7 @@ package org.openjfx.inf122finalproject;
 
 import java.util.*;
 
+/*  */
 public class Board {
     int height;
     int width;

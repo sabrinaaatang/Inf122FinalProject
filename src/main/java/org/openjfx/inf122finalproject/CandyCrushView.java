@@ -2,6 +2,7 @@ package org.openjfx.inf122finalproject;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -9,15 +10,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.io.IOException;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
 
-public class CandyCrushView {
+public class CandyCrushView extends GridPane {
     private Random rand = new Random();
     public Color[] colors = {Color.RED, Color.AZURE, Color.BLUE, Color.GOLD, Color.PURPLE};
-    private final VBox[][] blocks = new VBox[UIConfig.numOfRow][UIConfig.numOfCol];
+    private final VBox[][] blocks = new VBox[UIConfig.numOfRowCandy][UIConfig.numOfColCandy];
     private VBox selectedBox = null;
 //    private final TreeMap<Tile, VBox> blocks;
 
@@ -28,12 +30,31 @@ public class CandyCrushView {
         renderGrid();
     }
 
+    /* IMPORTANT. In order to make the component reusable. Class should extend the root container: e.g. GridPane.
+     * Create constructor for this. Now this component <CandyCrushView> can be reused inside other fxml file. */
+    public CandyCrushView() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("candy-crush-view.fxml"));
+        fxmlLoader.setRoot(this);
+
+        /* set its controller to itself -> initialize() function will be called.
+        *  set controller here to avoid infinite recursion. If set controller in
+        *  fxml file to this file will cause infinite recursion */
+        fxmlLoader.setController(CandyCrushView.this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public void renderGrid() {
         int row_pos = 0;
-        int counter = 1;
-        for (int row = UIConfig.startRow; row < UIConfig.startRow + UIConfig.numOfRow; row++)
+        for (int row = UIConfig.startRow; row < UIConfig.startRow + UIConfig.numOfRowCandy; row++)
         {
-            for (int col = 0; col < UIConfig.numOfCol; col++) {
+            for (int col = 0; col < UIConfig.numOfColCandy; col++) {
+                /* Create a vertical box VBox that contains a Rectangle inside */
                 VBox vbox = new VBox(new Rectangle(UIConfig.block_width, UIConfig.block_height, colors[rand.nextInt(5)]));
                 vbox.setId("candy_block");
                 vbox.getStyleClass().add("block-vbox");
@@ -67,10 +88,10 @@ public class CandyCrushView {
 
 
     public void clearBorder(VBox vbox) {
-        vbox.setStyle("-fx-border-width: 0px 0px 0px 0px;");
+        vbox.setStyle("-fx-border-width: 0px;");
     }
 
     public void setBorder(VBox vbox) {
-        vbox.setStyle("-fx-border-width: 2px 2px 2px 2px; -fx-border-insets: -2px -2px -2px -2px; -fx-border-color: #3b3bf3 ");
+        vbox.setStyle("-fx-border-width: 2px; -fx-border-insets: -2px; -fx-border-color: #3b3bf3 ");
     }
 }

@@ -5,12 +5,26 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.openjfx.inf122finalproject.HelloController">
+<?import org.openjfx.inf122finalproject.CandyCrushView?>
+<?import javafx.scene.layout.Pane?>
+<?import org.openjfx.inf122finalproject.TetrisView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import java.net.URL?>
+<?import org.openjfx.inf122finalproject.BoardComponent?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="org.openjfx.inf122finalproject.HelloController" alignment="center">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<!--    put component here to test  -->
+<!--    <CandyCrushView/>-->
+<!--    <TetrisView/>-->
+    <BoardComponent/>
+
+    <stylesheets>
+        <URL value="@hello-style.css" />
+    </stylesheets>
+</GridPane>

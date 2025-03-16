@@ -7,17 +7,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import java.net.*?>
+<?import javafx.scene.layout.GridPane?>
 
-<GridPane fx:controller="org.openjfx.inf122finalproject.CandyCrushView"
-          xmlns:fx="http://javafx.com/fxml" hgap="2" vgap="2"
-          styleClass="root" fx:id="grid">
-    <padding>
+<fx:root type="GridPane" fx:id="grid" xmlns:fx="http://javafx.com/fxml" >
+    <padding> <!-- could be removed later -->
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-
 
     <stylesheets>
         <URL value="@candy-crush-style.css" />
     </stylesheets>
-</GridPane>
+</fx:root>
 

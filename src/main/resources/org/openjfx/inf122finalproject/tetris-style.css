@@ -1,0 +1,12 @@
+.tetris-block-vbox {
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+    -fx-background-color: #303030;
+    -fx-alignment: center;
+}
+
+#grid {
+    -fx-grid-lines-visible: true;
+}

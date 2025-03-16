@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<fx:root type="GridPane" fx:id="grid" xmlns:fx="http://javafx.com/fxml">
+    <!-- Use for loop in controller class : TetrisView to create grids -->
+
+    <stylesheets>
+        <URL value="@tetris-style.css" />
+    </stylesheets>
+</fx:root>
