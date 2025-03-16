@@ -41,9 +41,8 @@ public class BoardView extends Application {
 
         for (int row = 0; row < BOARD_HEIGHT; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
-                // Generate a CandyBlock
-                Candy.CandyType randomCandyType = Candy.CandyType.values()[rand.nextInt(Candy.CandyType.values().length)];
-                CandyBlock block = new CandyBlock(randomCandyType);
+                // Use factory method to create a CandyBlock
+                Block block = Block.createBlock("CANDY");
 
                 // Create a Tile and associate it with the block
                 Tile tile = new Tile();
@@ -56,17 +55,21 @@ public class BoardView extends Application {
 
                 // Create UI representation
                 StackPane tilePane = new StackPane();
-                Rectangle rect = new Rectangle(TILE_SIZE - 1, TILE_SIZE - 1, block.getColor());
+                Rectangle rect = new Rectangle(TILE_SIZE - 1, TILE_SIZE - 1, ((CandyBlock) block).getColor());
 
                 tilePane.getChildren().add(rect);
-                tilePane.setOnMouseClicked(event -> highlightTile(tilePane, rect));
+
+                // Handle tile selection and print block details
+                int finalRow = row;
+                int finalCol = col;
+                tilePane.setOnMouseClicked(event -> highlightTile(tilePane, rect, finalRow, finalCol));
 
                 grid.add(tilePane, col, row);
             }
         }
     }
 
-    private void highlightTile(StackPane tilePane, Rectangle rect) {
+    private void highlightTile(StackPane tilePane, Rectangle rect, int row, int col) {
         if (selectedTile != null) {
             selectedRect.setStroke(null);
         }
@@ -80,6 +83,16 @@ public class BoardView extends Application {
             rect.setStrokeType(StrokeType.INSIDE);
             selectedTile = tilePane;
             selectedRect = rect;
+
+            // Retrieve block details
+            Block selectedBlock = board.grid[row][col].tile.containingBlock;
+
+            if (selectedBlock instanceof CandyBlock candy) {
+                System.out.println("Selected Block:");
+                System.out.println(" - Type: CandyBlock");
+                System.out.println(" - Color: " + candy.getColorName());
+                System.out.println(" - Coordinates: (" + row + ", " + col + ")");
+            }
         }
     }
 

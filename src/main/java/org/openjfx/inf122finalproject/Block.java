@@ -15,6 +15,13 @@ public abstract class Block {
     }
 
     /**
+     * Factory method to create a new Block instance.
+     */
+    public static Block createBlock(String typeName) {
+        return BlockFactory.createBlock(typeName); // Returns the correct Block subclass
+    }
+
+    /**
      * Get the block at a specific (x, y) position on the board.
      */
     public static Block getBlock(Board board, int x, int y) {
