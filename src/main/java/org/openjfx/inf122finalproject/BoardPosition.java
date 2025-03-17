@@ -1,9 +1,9 @@
 package org.openjfx.inf122finalproject;
 
 public class BoardPosition {
-    int x;
-    int y;
-    Tile tile;
+    public int x;
+    public int y;
+    public Tile tile;
 
     public BoardPosition(int x, int y, Tile tile) {
         this.x = x;

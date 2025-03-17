@@ -1,23 +1,13 @@
 package org.openjfx.inf122finalproject;
 
 public class Candy extends BlockType {
-    public enum CandyType {
-        RED, BLUE, GREEN, YELLOW, PURPLE, ORANGE
-    }
-
-    private final CandyType candyType;
-
-    public Candy(CandyType type) {
-        super("CANDY");
-        this.candyType = type;
-    }
-
-    public CandyType getCandyType() {
-        return candyType;
+    @Override
+    public String getShape() {
+        return "Candy";
     }
 
     @Override
-    public String toString() {
-        return "Candy Block of type: " + candyType;
+    public int[] getRotationStates() {
+        return new int[]{0};
     }
 }

@@ -1,32 +1,46 @@
 package org.openjfx.inf122finalproject;
 
-import java.util.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
-public class Tile {
-    Block containingBlock; // The block currently occupying this tile
+import java.util.List;
 
-    public Tile() {
-        this.containingBlock = null; // Tile starts empty
+public class Tile extends StackPane {
+    Block containingBlock;
+    private Rectangle rectangle;
+    int tileSize;
+
+    public Tile(int tileSize) {
+        this.tileSize = tileSize;
+        initialize();
     }
 
-    /**
-     * Finds adjacent tiles that contain blocks.
-     */
-    public List<Tile> getNeighbors(Board board, int x, int y) {
-        List<Tile> neighbors = new ArrayList<>();
-        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}}; // right, left, down, up
+    private void initialize() {
+        rectangle = new Rectangle(tileSize, tileSize);
+        rectangle.setFill(Color.TRANSPARENT);
+        rectangle.setStroke(Color.BLACK);
+        this.getChildren().add(rectangle);
+    }
 
-        for (int[] dir : directions) {
-            int newX = x + dir[0];
-            int newY = y + dir[1];
+    public List<Tile> getNeighbors() {
+        return null;
+    }
 
-            if (newX >= 0 && newX < board.height && newY >= 0 && newY < board.width) {
-                Tile neighborTile = board.grid[newX][newY].tile;
-                if (neighborTile.containingBlock != null) {
-                    neighbors.add(neighborTile); // Store only occupied tiles
-                }
-            }
+    public void setContainingBlock(Block block) {
+        this.containingBlock = block;
+        updateColor();
+    }
+
+    public Block getContainingBlock() {
+        return containingBlock;
+    }
+
+    public void updateColor() {
+        if (containingBlock != null) {
+            rectangle.setFill(containingBlock.getBlockType().getColor());
+        } else {
+            rectangle.setFill(Color.TRANSPARENT);
         }
-        return neighbors;
     }
 }

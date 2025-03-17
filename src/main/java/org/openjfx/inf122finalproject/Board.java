@@ -1,53 +1,71 @@
 package org.openjfx.inf122finalproject;
+import javafx.scene.layout.GridPane;
+import java.util.ArrayList;
 
-import java.util.*;
+public class Board  extends GridPane {
+    private int height;
+    private int width;
+    private BoardPosition[][] grid;
+    private ArrayList<Block> blocks;
+    private int tileSize;
 
-public class Board {
-    int height;
-    int width;
-    BoardPosition[][] grid; // 2D array representing board positions
-    ArrayList<Block> blocks; // List of all blocks on the board
-
-    public Board(int height, int width) {
-        this.height = height;
-        this.width = width;
-        this.grid = new BoardPosition[height][width];
+    public Board(int tileSize) {
+        this.tileSize = tileSize;
         this.blocks = new ArrayList<>();
+    }
 
-        // Initialize board with empty tiles
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                grid[i][j] = new BoardPosition(i, j, new Tile()); // Store BoardPosition with Tile
+    public void initialize(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.grid = new BoardPosition[height][width];
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                grid[row][col] = new BoardPosition(row, col, new Tile(tileSize));
+                this.add(grid[row][col].tile, col, row);
             }
         }
     }
 
-    /**
-     * Updates the board after a match is cleared.
-     */
     public void updateBoard() {
-        blocks.removeIf(block -> {
-            for (Tile tile : block.tiles) {
-                BoardPosition position = findBoardPosition(tile);
-                if (position != null) {
-                    position.tile.containingBlock = null; // Clear the block reference
-                }
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                grid[row][col].tile.updateColor();
             }
-            return block.tiles.isEmpty(); // Remove blocks that have no tiles left
-        });
+        }
     }
 
-    /**
-     * Finds the BoardPosition of a given tile.
-     */
+    public void applyMove(TileManipulator action) {
+        action.execute();
+        updateBoard();
+    }
+
+    public int getBoardWidth() {
+        return width;
+    }
+
+    public int getBoardHeight() {
+        return height;
+    }
+
     public BoardPosition findBoardPosition(Tile tile) {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (grid[i][j].tile == tile) {
-                    return grid[i][j];
+        for (BoardPosition[] boardPositions : grid) {
+            for (BoardPosition boardPosition : boardPositions) {
+                if (boardPosition.tile == tile) {
+                    return boardPosition;
                 }
             }
         }
         return null;
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
+
+    public Tile getTileAt(int x, int y) {
+        if (x < 0 || x >= width || y < 0 || y >= height) {
+            return null;
+        }
+        return grid[y][x].tile;
     }
 }
