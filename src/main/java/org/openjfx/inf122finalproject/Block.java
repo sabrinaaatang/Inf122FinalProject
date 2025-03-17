@@ -1,17 +1,21 @@
 package org.openjfx.inf122finalproject;
 
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 import java.awt.Point;
 
 public abstract class Block {
     ArrayList<Tile> tiles;
     String name;
-    Point centreOfMass;
+    Tile centreOfMass;
+    BlockManipulatorContext bm = new BlockManipulatorContext();
+    private ImageView img;
 
     public Block(String name) {
         this.name = name;
         tiles = new ArrayList<>();
-        centreOfMass = new Point(0, 0);
+        centreOfMass = null;
     }
 
     public void placeBlock(Board board) {

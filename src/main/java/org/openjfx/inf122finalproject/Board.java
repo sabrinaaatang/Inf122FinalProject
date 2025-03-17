@@ -6,24 +6,26 @@ import java.util.*;
 public class Board {
     int height;
     int width;
-    BoardPosition[][] grid;
-    ArrayList<Block> blocks;
+    Tile[][] grid;
+
 
     public Board(int height, int width) {
         this.height = height;
         this.width = width;
+        grid = new Tile[height][width];
+        initTiles();
     }
 
-    public void initialize(int height, int width) {
-        // i feel like this method might be unnecessary since the constructor will also be setting the height and width
+    public Tile[][] getGrid() { return grid; }
+
+
+    private void initTiles() {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                grid[row][col] = new Tile(col, row);
+            }
+        }
     }
 
-    public void updateBoard() {
-        //
-    }
-
-    public void applyMove(BlockManipulator action) {
-        //
-    }
     
 }

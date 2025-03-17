@@ -20,9 +20,9 @@
     </padding>
 
 <!--    put component here to test  -->
-<!--    <CandyCrushView/>-->
+    <CandyCrushView/>
 <!--    <TetrisView/>-->
-    <BoardComponent/>
+<!--    <BoardComponent/>-->
 
     <stylesheets>
         <URL value="@hello-style.css" />
