@@ -7,7 +7,17 @@ public class Candy extends BlockType {
     }
 
     @Override
-    public int[] getRotationStates() {
-        return new int[]{0};
+    public int[][] getRotationStates() {
+        return new int[][] { {1} };
+    }
+
+    @Override
+    public int getEffectiveWidth() {
+        return 1;
+    }
+
+    @Override
+    public int getEffectiveHeight() {
+        return 1;
     }
 }

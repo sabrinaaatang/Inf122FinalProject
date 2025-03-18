@@ -1,5 +1,5 @@
 package org.openjfx.inf122finalproject;
-
+import javafx.scene.input.MouseEvent;
 public class PlayerInput {
     public enum InputSource { MOUSE, KEYBOARD }
 
@@ -8,13 +8,15 @@ public class PlayerInput {
     private double startY;
     private double endX;
     private double endY;
+    private MouseEvent mouseEvent;
 
-    public PlayerInput(InputSource source, double startX, double startY, double endX, double endY) {
+    public PlayerInput(InputSource source, double startX, double startY, double endX, double endY, MouseEvent mouseEvent) {
         this.source = source;
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
         this.endY = endY;
+        this.mouseEvent = mouseEvent;
     }
 
     public InputSource getSource() {
@@ -35,5 +37,9 @@ public class PlayerInput {
 
     public double getEndY() {
         return endY;
+    }
+
+    public MouseEvent getMouseEvent() {
+        return mouseEvent;
     }
 }

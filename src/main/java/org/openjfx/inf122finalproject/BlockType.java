@@ -29,6 +29,13 @@ public abstract class BlockType {
         return color;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
     public abstract String getShape();
-    public abstract int[] getRotationStates();
+    public abstract int[][] getRotationStates();
+
+    public abstract int getEffectiveWidth();
+
+    public abstract int getEffectiveHeight();
 }
