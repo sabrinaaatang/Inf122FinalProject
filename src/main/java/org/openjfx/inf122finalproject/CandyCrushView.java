@@ -22,7 +22,7 @@ import java.util.TreeMap;
 public class CandyCrushView extends GridPane {
     private Random rand = new Random();
     private Tile[][] gridContainer = null;
-    private final CandyViewModel viewModel = new CandyViewModel();
+    private final CandyViewModel viewModel;
 
     @FXML
     private GridPane gridPane;
@@ -30,14 +30,16 @@ public class CandyCrushView extends GridPane {
     /* bind property & add listener here */
     @FXML public void initialize() {
         gridContainer = viewModel.getCandyGrid();
-        renderGrid();
+
         bindProperty();
         setListener();
+        initGrid();
     }
 
     /* IMPORTANT. In order to make the component reusable. Class should extend the root container: e.g. GridPane.
      * Create constructor for this. Now this component <CandyCrushView> can be reused inside other fxml file. */
     public CandyCrushView() {
+        viewModel = new CandyViewModel();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("candy-crush-view.fxml"));
         fxmlLoader.setRoot(this);
 
@@ -53,32 +55,40 @@ public class CandyCrushView extends GridPane {
         }
     }
 
+    public void initGrid() {
+        Block[][] grids = this.viewModel.candyBlocksProperty().get();
+        gridPane.getChildren().clear();
 
-//    CandyBlock[][] blocks
-    public void renderGrid() {
-        String fp = "/org/openjfx/inf122finalproject/candy/candy";
+        for (int r = 0; r < UIConfig.numOfRowCandy; r++) {
+            for (int c = 0; c < UIConfig.numOfColCandy; c++) {
+                Tile tile = this.gridContainer[r][c];
+                tile.getChildren().clear();
+                tile.getChildren().add(grids[r][c].getImageView());
+                tile.setOnMouseClicked(event -> {
+                    Tile clickedCandy = (Tile) event.getSource();
+                    viewModel.onClickSelection(clickedCandy.getPosition(), clickedCandy);
+                });
+                gridPane.add(tile, c, r + UIConfig.startRow);
+            }
+        }
+    }
+
+
+    public void updateGrid(Block[][] newGrid) {
         assert(gridContainer != null);
+
+        /* Don't make change when newGrid is null because the mechanism behind
+           property triggered when the reference inside the property changes */
+        if(newGrid == null) { return; }
+
+        System.out.println("Board Property triggered.");
 
         gridPane.getChildren().clear();
         for (int r = 0; r < UIConfig.numOfRowCandy; r++) {
             for (int c = 0; c < UIConfig.numOfColCandy; c++) {
                 Tile tile = this.gridContainer[r][c];
                 tile.getChildren().clear();
-                int randInt = rand.nextInt(4);
-                Image img = new Image(Objects.requireNonNull(getClass()
-                .getResourceAsStream( fp + (randInt+1) + ".png" )));
-
-                ImageView candy = new ImageView(img);
-//
-                candy.setFitHeight(UIConfig.block_height);
-                candy.setFitWidth(UIConfig.block_width);
-                tile.getChildren().add(candy);
-                tile.setOnMouseClicked(event -> {
-                    Tile clickedCandy = (Tile) event.getSource();
-                    System.out.println("Clicked Candy at Row: " + (GridPane.getRowIndex(clickedCandy) - UIConfig.startRow) +
-                            ", Col: " + GridPane.getColumnIndex(clickedCandy));
-                    viewModel.onClickSelection(clickedCandy);
-                });
+                tile.getChildren().add(newGrid[r][c].getImageView());
                 gridPane.add(tile, c, r + UIConfig.startRow);
             }
         }
@@ -95,7 +105,7 @@ public class CandyCrushView extends GridPane {
             viewModel.setBorder(newTile);
         });
 
-//        viewModel.candyBlocksProperty().addListener((observable, oldGrid, newGrid) -> renderGrid(newGrid));
+        viewModel.candyBlocksProperty().addListener((observable, oldGrid, newGrid) -> updateGrid(newGrid));
 
     }
 

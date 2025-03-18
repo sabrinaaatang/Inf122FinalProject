@@ -1,8 +1,8 @@
 package org.openjfx.inf122finalproject;
 
 public class EmptyBlock extends Block {
-    public EmptyBlock(String name) {
-        super(name);
+    public EmptyBlock(BlockType type) {
+        super(type);
 
         this.setIsEmpty(true);
     }

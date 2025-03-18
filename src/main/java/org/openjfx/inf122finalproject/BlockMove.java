@@ -2,13 +2,21 @@ package org.openjfx.inf122finalproject;
 
 import javafx.beans.property.ObjectProperty;
 
+/**
+ *  Prepare manipulation for a single move (for two adjacent tiles) in the game board.
+ */
 public class BlockMove implements BlockManipulator {
     private final Board board;
     private final ObjectProperty<Block[][]> blocksBoard;
     private final Position ps;
     private final Position pd;
 
-    /** move block on position1 to position2 */
+    /** move block on position1 to position2
+     * @param board Get reference of Tiles for checking wall.
+     * @param blocksBoard Has listener bind to this. Use to update UI.
+     * @param ps  Start position.
+     * @param pd Destination position.
+     */
     public BlockMove(Board board, Position ps, Position pd, ObjectProperty<Block[][]> blocksBoard) {
         this.board = board;
         this.ps = ps;
@@ -55,6 +63,7 @@ public class BlockMove implements BlockManipulator {
         blocks[r_st][c_st] = dest;
         blocks[r_dest][c_dest] = start;
 
+        this.blocksBoard.set(null);
         this.blocksBoard.set(blocks);   //update property
     }
 }

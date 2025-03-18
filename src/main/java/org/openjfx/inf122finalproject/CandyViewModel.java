@@ -20,7 +20,7 @@ public class CandyViewModel {
         candyBoard = new CandyModel(UIConfig.numOfRowCandy, UIConfig.numOfColCandy);
     }
 
-    public ObjectProperty<CandyBlock[][]> candyBlocksProperty() { return candyBoard.candyBlocksProperty(); }
+    public ObjectProperty<Block[][]> candyBlocksProperty() { return candyBoard.candyBlocksProperty(); }
 
     public ObjectProperty<Tile> prevSelectProperty() { return prevSelect; }
 
@@ -28,13 +28,11 @@ public class CandyViewModel {
         this.prevSelect.set(currSelect);
     }
 
-
-
-    public void onClickSelection(Tile currSelect) {
+    public void onClickSelection(Position pos, Tile currSelect) {
         if (this.prevSelect.get() == currSelect || currSelect == null) return;
 
         if(prevSelect.get() != null && isNextTo(this.prevSelect.get(), currSelect)) {
-            candyBoard.trySwap(this.prevSelect.get(), currSelect);
+            candyBoard.trySwap(this.prevSelect.get().getPosition(), currSelect.getPosition());
             clearBorder(prevSelect.get());
             prevSelect.set(null);
         }

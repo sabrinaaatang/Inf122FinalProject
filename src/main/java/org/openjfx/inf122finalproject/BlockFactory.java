@@ -5,16 +5,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BlockFactory {
-    private final static Map<String, String> blockStorage = new HashMap<>();
+    private final static Map<BlockType, String> blockStorage = new HashMap<>();
     static {
-        blockStorage.put("L_SHAPE", "org.openjfx.inf122finalproject.TetrisBlock");
-        blockStorage.put("RED_CANDY", "org.openjfx.inf122finalproject.CandyBlock");
-        blockStorage.put("EMPTY_BLOCK", "org.openjfx.inf122finalproject.EmptyBlock");
-
+        blockStorage.put(BlockType.TETRIS_L_SHAPE, "org.openjfx.inf122finalproject.TetrisBlock");
+        blockStorage.put(BlockType.CHOCO_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
+        blockStorage.put(BlockType.EMPTY_BLOCK, "org.openjfx.inf122finalproject.EmptyBlock");
+        blockStorage.put(BlockType.BROWN_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
+        blockStorage.put(BlockType.PINK_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
+        blockStorage.put(BlockType.YELLOW_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
         //...
     }
 
-    public static Block createBlock(String typeName) {
+    public static Block createBlock(BlockType typeName) {
         String className = blockStorage.get(typeName);
 
         if (className == null) {
@@ -31,7 +33,7 @@ public class BlockFactory {
     }
 
     public static void main(String[] args) {
-        Block A = BlockFactory.createBlock("L_SHAPE");
+        Block A = BlockFactory.createBlock(BlockType.PINK_CANDY);
         System.out.println(A);
     }
 

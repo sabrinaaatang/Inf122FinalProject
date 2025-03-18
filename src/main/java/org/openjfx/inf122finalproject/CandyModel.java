@@ -3,14 +3,15 @@ package org.openjfx.inf122finalproject;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.util.Random;
+
 public class CandyModel extends GameModel {
     /* Model Class
      * Function call to business logic and data access */
-    private int row ;
-    private int col ;
     private final CandyBoard candyBoard;
-    private ObjectProperty<CandyBlock[][]> blocks = null;     // create by the game manager?
+    private volatile ObjectProperty<Block[][]> blocks;     // create by the game manager?
 //    private final CandyRule = new CandyGameRule();
+    private final BlockManipulatorContext bm = new BlockManipulatorContext();
 
     public CandyModel(int row, int col) {
         super(row, col);
@@ -21,17 +22,25 @@ public class CandyModel extends GameModel {
 
     public Tile[][] getGrid() { return candyBoard.getGrid(); }
 
-    public ObjectProperty<CandyBlock[][]> candyBlocksProperty() { return this.blocks; }
+    public ObjectProperty<Block[][]> candyBlocksProperty() { return this.blocks; }
 
     /* block manipulation */
-    public void trySwap(Tile t1, Tile t2) {
-        System.out.println("Modify Model class' Data");
+    public void trySwap(Position p1, Position p2) {
+        bm.setAlgorithm(new BlockSwap(p1, p2, blocks));
+        bm.performManipulation();
     }
 
-    public void initBlocks() {
-
+    private void initBlocks() {
+        this.blocks = new SimpleObjectProperty<>(new CandyBlock[getRow()][getColumn()]);
+        Random rand = new Random();
+        Block[][] candyBlocks= this.blocks.get();
+        final BlockType[] blockTypes = {BlockType.PINK_CANDY, BlockType.CHOCO_CANDY, BlockType.BROWN_CANDY, BlockType.YELLOW_CANDY};
+        for(int i = 0; i < getRow(); i++) {
+            for(int j = 0; j < getColumn(); j++) {
+                candyBlocks[i][j] = (CandyBlock) BlockFactory.createBlock(blockTypes[rand.nextInt(4)]);
+            }
+        }
+        this.candyBlocksProperty().set(candyBlocks);
     }
-
-
 
 }
