@@ -1,5 +1,5 @@
 package org.openjfx.inf122finalproject;
 
-public class CandyCrushManager {
+public class CandyCrushManager extends GameManager {
     
 }

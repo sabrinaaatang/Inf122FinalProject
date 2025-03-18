@@ -5,7 +5,7 @@ import javafx.beans.property.ObjectProperty;
 /**
  *  Prepare manipulation for a single move (for two adjacent tiles) in the game board.
  */
-public class BlockMove implements BlockManipulator {
+public class BlockMove {
     private final Board board;
     private final ObjectProperty<Block[][]> blocksBoard;
     private final Position ps;
@@ -25,7 +25,7 @@ public class BlockMove implements BlockManipulator {
     }
 
     /** assertion : all blocks inside property are filled either with Blocks or EmptyBlocks */
-    public void manipulate() {
+    public boolean perform() {
         Block[][] blocks = blocksBoard.get();
         Tile[][] tiles = board.getGrid();
         int r_st = ps.getRow();
@@ -37,9 +37,9 @@ public class BlockMove implements BlockManipulator {
         Block dest = blocks[r_dest][c_dest];
 
         /* check whether start block is an empty block */
-        if(start.isEmpty) {
+        if(start.isEmpty()) {
             System.out.println("cannot move a empty block" + start) ;
-            return;
+            return false;
         }
 
         Position moveDir = Position.getVector(ps, pd);
@@ -50,13 +50,13 @@ public class BlockMove implements BlockManipulator {
         /* check if there is a wall in between */
         if(startTile.hasWallsOnDirection(moveDir) || destTile.hasWallsOnDirection(inverseDir)) {
             System.out.println("blocked by wall");
-            return;
+            return false;
         }
 
         /* check whether end block is an empty block */
-        if(!dest.isEmpty) {
+        if(!dest.isEmpty()) {
             System.out.println("cannot move to an occupied place" + start) ;
-            return;
+            return false;
         }
 
         /* now safe to move (swap) */
@@ -65,5 +65,6 @@ public class BlockMove implements BlockManipulator {
 
         this.blocksBoard.set(null);
         this.blocksBoard.set(blocks);   //update property
+        return true;
     }
 }

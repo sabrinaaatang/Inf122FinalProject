@@ -4,9 +4,9 @@ import java.util.*;
 
 /* Multiple of tiles */
 public class Board {
-    int height;
-    int width;
-    Tile[][] grid;
+    private int height;
+    private int width;
+    private Tile[][] grid;
 
 
     public Board(int height, int width) {
@@ -22,10 +22,11 @@ public class Board {
     private void initTiles() {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                grid[row][col] = new Tile(col, row);
+                grid[row][col] = new Tile(row, col);
             }
         }
     }
 
-    
+    public int getHeight() { return height; }
+    public int getWidth() { return width; }
 }

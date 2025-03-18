@@ -11,9 +11,9 @@ public class CandyBoard extends Board {
     }
 
     public void addCandyTileSetting() {
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                Tile tile = grid[row][col];
+        for (int row = 0; row < this.getHeight(); row++) {
+            for (int col = 0; col < this.getWidth(); col++) {
+                Tile tile = this.getGrid()[row][col];
                 tile.setId("candy_block");
                 tile.getStyleClass().add("block-vbox");
                 tile.setStyle("-fx-border-width: 0;");

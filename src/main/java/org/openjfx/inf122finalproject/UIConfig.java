@@ -12,8 +12,7 @@ public class UIConfig {
     static int numOfColTetris = 10;
 
     static WindowSize windowSize = new WindowSize(1280, 1280);
-    static int block_width = 60;
-    static int block_height = 60;
+    static int candySize = 60;
 
     static int tetrisBlockWidth = 38;
     static int tetrisBlockHeight = 38;

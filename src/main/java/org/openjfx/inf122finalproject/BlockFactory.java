@@ -13,6 +13,10 @@ public class BlockFactory {
         blockStorage.put(BlockType.BROWN_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
         blockStorage.put(BlockType.PINK_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
         blockStorage.put(BlockType.YELLOW_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
+        blockStorage.put(BlockType.ICECREAM_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
+        blockStorage.put(BlockType.CREAM_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
+        blockStorage.put(BlockType.REAL_CANDY, "org.openjfx.inf122finalproject.CandyBlock");
+
         //...
     }
 
@@ -33,7 +37,8 @@ public class BlockFactory {
     }
 
     public static void main(String[] args) {
-        Block A = BlockFactory.createBlock(BlockType.PINK_CANDY);
+//        Block A = BlockFactory.createBlock(BlockType.BLOCK_TYPE);
+        Block A = new EmptyBlock(BlockType.EMPTY_BLOCK);
         System.out.println(A);
     }
 

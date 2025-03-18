@@ -37,6 +37,7 @@ public class CandyViewModel {
             prevSelect.set(null);
         }
         else {
+            System.out.println("selecting : " + candyBoard.getBlock(currSelect.getPosition()));
             setPrevSelect(currSelect);
         }
     }

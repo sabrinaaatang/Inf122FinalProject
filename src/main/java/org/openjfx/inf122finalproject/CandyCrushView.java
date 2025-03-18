@@ -20,7 +20,6 @@ import java.util.Random;
 import java.util.TreeMap;
 
 public class CandyCrushView extends GridPane {
-    private Random rand = new Random();
     private Tile[][] gridContainer = null;
     private final CandyViewModel viewModel;
 

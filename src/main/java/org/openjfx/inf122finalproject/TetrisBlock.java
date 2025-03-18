@@ -7,7 +7,7 @@ public class TetrisBlock extends Block {
 
     @Override
     public String toString() {
-        return "A " + this.type + " Tetris Block";
+        return "A " + this.getType() + " Tetris Block";
     }
 
 

@@ -91,10 +91,12 @@ public class Tile extends VBox {
     public void clearWall() { this.walls = new boolean[4]; }
 
     public boolean hasWallsOnDirection(Position direction) {
-        if(direction.x == 0 && direction.y > 0) { return walls[0]; }
-        else if(direction.x > 0 && direction.y == 0) { return walls[1]; }
-        else if(direction.x == 0 && direction.y < 0) { return walls[2]; }
-        else if(direction.x < 0 && direction.y == 0) { return walls[3]; }
+        int y = direction.getRow();
+        int x = direction.getColumn();
+        if     ( x == 0 && y > 0) { return walls[0]; }
+        else if(x > 0 && y == 0) { return walls[1]; }
+        else if(x == 0 && y < 0) { return walls[2]; }
+        else if(x < 0 && y == 0) { return walls[3]; }
         else {
             System.out.println("Invalid direction");
             return false;
