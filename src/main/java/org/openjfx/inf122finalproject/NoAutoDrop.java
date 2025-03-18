@@ -3,7 +3,7 @@ package org.openjfx.inf122finalproject;
 public class NoAutoDrop implements AutoDropBehavior {
 
     @Override
-    public void drop() {
+    public void autoDrop(GameModel board) {
         /* can't auto drop */
     }
 }

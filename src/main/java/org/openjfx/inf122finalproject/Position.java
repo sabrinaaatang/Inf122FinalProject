@@ -21,9 +21,24 @@ public class Position {
             if (this.x != 0 && this.x - 1 == pos.x) return true;
 
             if (this.x != maxX && this.x + 1 == pos.x) return true;
-
         }
         return false;
+    }
+
+    public int getRow() {
+        return y;
+    }
+
+    public int getColumn() {
+        return x;
+    }
+
+    public static Position getVector(Position start, Position dest) {
+        return new Position(dest.x - start.x, dest.y - start.y);
+    }
+
+    public static Position inverse(Position vec) {
+        return new Position(-vec.x, -vec.y);
     }
 
 

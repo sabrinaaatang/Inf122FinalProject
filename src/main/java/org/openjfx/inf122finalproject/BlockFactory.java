@@ -7,8 +7,10 @@ import java.util.Map;
 public class BlockFactory {
     private final static Map<String, String> blockStorage = new HashMap<>();
     static {
-        blockStorage.put("L_SHAPE", "org.openjfx.tilematch.TetrisBlock");
-        blockStorage.put("RED_CANDY", "org.openjfx.tilematch.CandyBlock");
+        blockStorage.put("L_SHAPE", "org.openjfx.inf122finalproject.TetrisBlock");
+        blockStorage.put("RED_CANDY", "org.openjfx.inf122finalproject.CandyBlock");
+        blockStorage.put("EMPTY_BLOCK", "org.openjfx.inf122finalproject.EmptyBlock");
+
         //...
     }
 

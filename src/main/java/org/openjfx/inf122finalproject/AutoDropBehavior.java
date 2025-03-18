@@ -1,5 +1,5 @@
 package org.openjfx.inf122finalproject;
 
 public interface AutoDropBehavior {
-    void drop();
+    void autoDrop(GameModel board);
 }

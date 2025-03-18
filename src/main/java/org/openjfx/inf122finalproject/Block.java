@@ -7,10 +7,13 @@ import java.awt.Point;
 
 public abstract class Block {
     ArrayList<Tile> tiles;
+    boolean isEmpty = true;
     String name;
+    int score;
     Tile centreOfMass;
     BlockManipulatorContext bm = new BlockManipulatorContext();
     private ImageView img;
+    AutoDropBehavior autoDropBehavior;
 
     public Block(String name) {
         this.name = name;
@@ -27,6 +30,17 @@ public abstract class Block {
     }
 
     // more functions
+    public ArrayList<Tile> getTiles() {
+        return tiles;
+    }
+
+    public void setIsEmpty(boolean empty) {
+        isEmpty = empty;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
+    }
 
     @Override
     public String toString() {
