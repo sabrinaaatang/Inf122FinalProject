@@ -6,7 +6,7 @@ import javafx.scene.layout.VBox;
 /* Make class Tile extend VBox, so Tile can perform as a container and can encapsulate our data */
 /* Which means we can put blocks inside tiles using setUserData(Type of Block) */
 public class Tile extends VBox {
-    Position position;
+    private Position position;
     private Boolean[] walls = new Boolean[4];  // walls on direction N, E, S, W
     private String dropDirection;          // An auto dropable block in this tile will drop towards this direction;
     private boolean isPlaceable = true;
@@ -40,5 +40,9 @@ public class Tile extends VBox {
 
     public boolean getPlaceable() {
         return isPlaceable;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 }

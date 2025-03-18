@@ -30,8 +30,6 @@ public class CandyViewModel {
 
 
 
-
-
     public void onClickSelection(Tile currSelect) {
         if (this.prevSelect.get() == currSelect || currSelect == null) return;
 
@@ -61,6 +59,6 @@ public class CandyViewModel {
     }
 
     private boolean isNextTo(Tile prev, Tile curr) {
-        return prev.position.isNextTo(curr.position, this.row, this.col);
+        return prev.getPosition().isNextTo(curr.getPosition(), this.row, this.col);
     }
 }

@@ -21,7 +21,6 @@ import java.util.TreeMap;
 
 public class CandyCrushView extends GridPane {
     private Random rand = new Random();
-    public Color[] colors = {Color.RED, Color.AZURE, Color.BLUE, Color.GOLD, Color.PURPLE};
     private Tile[][] gridContainer = null;
     private final CandyViewModel viewModel = new CandyViewModel();
 

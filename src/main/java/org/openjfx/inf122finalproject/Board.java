@@ -2,7 +2,7 @@ package org.openjfx.inf122finalproject;
 
 import java.util.*;
 
-/*  */
+/* Multiple of tiles */
 public class Board {
     int height;
     int width;
