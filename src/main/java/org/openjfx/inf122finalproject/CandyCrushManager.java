@@ -4,9 +4,16 @@ package org.openjfx.inf122finalproject;
 public class CandyCrushManager extends GameManager {
     private TileManipulatorContext manipulatorContext;
     private final Board board;
+
+    private ScoreManager scoreManager;
+    private Player player;
     private int minClearCount = 3;
+
+    private final int POINTS_PER_TILE = 10;
     public CandyCrushManager(Board board) {
         this.board = board;
+        this.scoreManager = new ScoreManager();
+        this.player = new Player(1, "Player 1");
         fillEmptyBlocks();
     }
 
@@ -168,17 +175,24 @@ public class CandyCrushManager extends GameManager {
     public void clearMatches(boolean[][] toClear) {
         int boardWidth = board.getBoardWidth();
         int boardHeight = board.getBoardHeight();
+        int tilesCleared = 0;
+
         for (int row = 0; row < boardHeight; row++) {
             for (int col = 0; col < boardWidth; col++) {
                 if (toClear[row][col]) {
                     Tile tile = board.getTileAt(col, row);
                     if (tile != null) {
                         tile.setContainingBlock(null);
+                        tilesCleared++;
                     }
                 }
             }
         }
 
+        if (tilesCleared > 0) {
+            int pointsEarned = tilesCleared * POINTS_PER_TILE;
+            scoreManager.updateScore(player, pointsEarned);
+        }
     }
     private boolean blocksMatch(Tile t1, Tile t2) {
         if (t1 == null || t2 == null) return false;
@@ -192,5 +206,7 @@ public class CandyCrushManager extends GameManager {
     }
 
     @Override
-    public int getScore(){return 0;}
+    public int getScore() {
+        return scoreManager.getScore(player);
+    }
 }

@@ -35,8 +35,8 @@ public class BoardView extends Application {
         root.setStyle("-fx-background-color: #333;");
         root.getChildren().addAll(scoreLabel, board);
 
-//        gameManager = new CandyCrushManager(board);
-        gameManager = new TetrisManager(board);
+        gameManager = new CandyCrushManager(board);
+        //gameManager = new TetrisManager(board);
         Scene scene = new Scene(root, width * tileSize, height * tileSize);
 
         scene.setOnMousePressed((MouseEvent event) -> {
