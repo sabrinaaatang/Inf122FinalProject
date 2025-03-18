@@ -11,7 +11,7 @@ public class TetrisManager extends GameManager {
     private Block currentPiece;
     private boolean gameOver = false;
     private Timeline dropTimer;
-
+    private final int POINTS_PER_ROW = 10;
     private ScoreManager scoreManager;
     private Player player;
 
@@ -146,7 +146,7 @@ public class TetrisManager extends GameManager {
             }
         }
         if (lineCleared) {
-            int points = linesCleared * 10; //or whatever score modifier we want to do - i have to look up the tetris scoring lol
+            int points = linesCleared * POINTS_PER_ROW; //or whatever score modifier we want to do - i have to look up the tetris scoring lol
             scoreManager.updateScore(player, points);
             updateBoard();
         }
