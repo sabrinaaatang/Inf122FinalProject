@@ -11,8 +11,14 @@ public class TetrisManager extends GameManager {
     private Block currentPiece;
     private boolean gameOver = false;
     private Timeline dropTimer;
+
+    private ScoreManager scoreManager;
+    private Player player;
+
     public TetrisManager(Board board) {
         this.board = board;
+        this.scoreManager = new ScoreManager();
+        this.player = new Player(1, "Player 1");
         spawnNewPiece();
 
     }
@@ -37,6 +43,10 @@ public class TetrisManager extends GameManager {
         if (dropTimer != null) {
             dropTimer.play();
         }
+    }
+
+    public int getScore() {
+        return scoreManager.getScore(player);
     }
 
     @Override
@@ -109,6 +119,7 @@ public class TetrisManager extends GameManager {
         int width = board.getBoardWidth();
         int height = board.getBoardHeight();
         boolean lineCleared = false;
+        int linesCleared = 0;
 
         // Check each row to see if it's fully occupied
         for (int row = 0; row < height; row++) {
@@ -129,11 +140,14 @@ public class TetrisManager extends GameManager {
                     }
                 }
                 lineCleared = true;
+                linesCleared++;
                 // Optionally make blocks above drop down
                 shiftRowsDown(row);
             }
         }
         if (lineCleared) {
+            int points = linesCleared * 10; //or whatever score modifier we want to do - i have to look up the tetris scoring lol
+            scoreManager.updateScore(player, points);
             updateBoard();
         }
     }

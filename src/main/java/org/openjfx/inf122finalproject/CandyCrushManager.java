@@ -190,4 +190,7 @@ public class CandyCrushManager extends GameManager {
     public boolean isGameOver() {
         return false;
     }
+
+    @Override
+    public int getScore(){return 0;}
 }

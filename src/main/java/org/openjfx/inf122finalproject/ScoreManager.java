@@ -17,4 +17,8 @@ public class ScoreManager {
     public void resetScore() {
         scores.clear();
     }
+
+    public int getScore(Player player) {
+        return scores.getOrDefault(player, 0);
+    }
 }
