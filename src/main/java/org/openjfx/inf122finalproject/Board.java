@@ -17,9 +17,9 @@ public class Board  extends GridPane {
         this.height = height;
         this.grid = new BoardPosition[height][width];
 
-        this.setHgap(0);  // No extra horizontal spacing
-        this.setVgap(0);  // No extra vertical spacing
-        this.setAlignment(Pos.CENTER); // Explicitly center contents
+        this.setHgap(0);
+        this.setVgap(0);
+        this.setAlignment(Pos.CENTER);
 
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
