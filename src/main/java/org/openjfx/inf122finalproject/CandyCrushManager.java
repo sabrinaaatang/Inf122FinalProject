@@ -2,7 +2,6 @@ package org.openjfx.inf122finalproject;
 
 
 public class CandyCrushManager extends GameManager {
-    private TileManipulatorContext manipulatorContext;
     private final Board board;
 
     private ScoreManager scoreManager;
@@ -197,9 +196,10 @@ public class CandyCrushManager extends GameManager {
     private boolean blocksMatch(Tile t1, Tile t2) {
         if (t1 == null || t2 == null) return false;
         if (t1.getContainingBlock() == null || t2.getContainingBlock() == null) return false;
-        return t1.getContainingBlock().getBlockType().getColor()
-                .equals(t2.getContainingBlock().getBlockType().getColor());
+        return t1.getContainingBlock().getBlockType().getTypeIdentifier()
+                .equals(t2.getContainingBlock().getBlockType().getTypeIdentifier());
     }
+
     @Override
     public boolean isGameOver() {
         return false;

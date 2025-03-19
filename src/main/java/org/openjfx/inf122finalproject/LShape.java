@@ -1,19 +1,17 @@
 package org.openjfx.inf122finalproject;
 
 import javafx.scene.paint.Color;
-
 import java.util.Random;
 
 public class LShape extends BlockType {
 
-
     public enum LShapeVariant {
-        RIGHT_L(new int[][] { {1, 0}, {1, 1} }),//INVERTED_RIGHT_L
-        LEFT_L(new int[][] { {0, 1}, {1, 1} }),//RIGHT_L
-        INVERTED_RIGHT_L(new int[][] { {1, 1}, {1, 0} }),//INVERTED_LEFT_L
-        INVERTED_LEFT_L(new int[][] { {1, 1}, {0, 1} }),//LEFT_L
-        VERTICAL(new int[][] { {1, 0}, {1, 0} }),//HORIZONTAL
-        HORIZONTAL(new int[][] { {0, 0}, {1, 1} });//VERTICAL
+        RIGHT_L(new int[][] { {1, 0}, {1, 1} }),
+        INVERTED_RIGHT_L(new int[][] { {1, 1}, {1, 0} }),
+        INVERTED_LEFT_L(new int[][] { {1, 1}, {0, 1} }),
+        LEFT_L(new int[][] { {0, 1}, {1, 1} }),
+        VERTICAL(new int[][] { {1, 0}, {1, 0} }),
+        HORIZONTAL(new int[][] { {0, 0}, {1, 1} });
 
         private final int[][] shape;
 
@@ -28,25 +26,21 @@ public class LShape extends BlockType {
 
     private int[][] shapeMatrix;
     private LShapeVariant currentVariant;
+
     public LShape() {
+        super(Color.ORANGE);
         LShapeVariant[] variants = LShapeVariant.values();
         Random rand = new Random();
         currentVariant = variants[rand.nextInt(variants.length)];
         shapeMatrix = currentVariant.getShape();
     }
 
-    public LShapeVariant getCurrentVariant() {
-        return currentVariant;
-    }
-
     private LShape(LShapeVariant variant, Color color) {
-        currentVariant = variant;
-        shapeMatrix = variant.getShape();
-        super.setColor(color);
-        setColor(Color.ORANGE);
+        super(color);
+        this.currentVariant = variant;
+        this.shapeMatrix = variant.getShape();
     }
 
-    // Returns a new LShape with the rotated variant, based on a simple switch.
     public LShape getRotated() {
         LShapeVariant newVariant;
         switch (currentVariant) {

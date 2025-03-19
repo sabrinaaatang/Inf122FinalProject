@@ -32,7 +32,7 @@ public class Block {
                     int boardX = originX + c;
                     int boardY = originY + r;
                     Tile tile = board.getTileAt(boardX, boardY);
-                    if (tile != null && tile.containingBlock == null) {
+                    if (tile != null && tile.getContainingBlock() == null) {
                         containingTiles.add(tile);
                         tile.setContainingBlock(this);
                     }

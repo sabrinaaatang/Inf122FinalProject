@@ -1,18 +1,17 @@
 package org.openjfx.inf122finalproject;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.animation.FadeTransition;
-import javafx.util.Duration;
-
-
-import java.util.List;
 
 public class Tile extends StackPane {
-    Block containingBlock;
-    private Rectangle rectangle;
-    int tileSize;
+    private Block containingBlock;
+    private Rectangle border;  // Keeps the tile border
+    private Rectangle colorFill; // Used for Tetris blocks
+    private ImageView imageView;  // Used for Candy blocks
+    private int tileSize;
 
     public Tile(int tileSize) {
         this.tileSize = tileSize;
@@ -20,51 +19,49 @@ public class Tile extends StackPane {
     }
 
     private void initialize() {
-        rectangle = new Rectangle(tileSize, tileSize);
-        rectangle.setFill(Color.TRANSPARENT);
-        rectangle.setStroke(Color.BLACK);
-        this.getChildren().add(rectangle);
-    }
+        // Create a border for the tile
+        border = new Rectangle(tileSize, tileSize);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.BLACK);
 
-    public List<Tile> getNeighbors() {
-        return null;
+        // Create a colored rectangle (for Tetris blocks)
+        colorFill = new Rectangle(tileSize, tileSize);
+        colorFill.setFill(Color.TRANSPARENT);
+
+        // Create an ImageView for candy images
+        imageView = new ImageView();
+        imageView.setFitWidth(tileSize);
+        imageView.setFitHeight(tileSize);
+
+        // StackPane layers in order: image (below), color (middle), border (top)
+        this.getChildren().addAll(imageView, colorFill, border);
     }
 
     public void setContainingBlock(Block block) {
-        Color currentColor = Color.TRANSPARENT;
-        Color newColor = Color.TRANSPARENT;
-        if(this.containingBlock != null){
-            currentColor = this.containingBlock.getBlockType().getColor();
-        }
-        if(block != null){
-            newColor =  block.getBlockType().getColor();
-        }
         this.containingBlock = block;
-        updateColor(currentColor, newColor);
+        updateAppearance();
     }
 
     public Block getContainingBlock() {
         return containingBlock;
     }
 
-    public void updateColor(Color currentColor, Color newColor) {
-        if (newColor != Color.TRANSPARENT) {
-            rectangle.setFill(newColor);
-            //rectangle.setOpacity(1.0);
-        } else if (currentColor != Color.TRANSPARENT) {
-            rectangle.setFill(Color.TRANSPARENT);
-          /*  if (!rectangle.getFill().equals(Color.TRANSPARENT)) {
-                FadeTransition fade = new FadeTransition(Duration.millis(500), rectangle);
-                fade.setFromValue(1.0);
-                fade.setToValue(0.0);
-                fade.setOnFinished(event -> {
-                    rectangle.setFill(Color.TRANSPARENT);
-                    rectangle.setOpacity(1.0); // Reset for future animations.
-                });
-                fade.play();
-            } else {
-                rectangle.setFill(Color.TRANSPARENT);
-            }*/
+    private void updateAppearance() {
+        if (containingBlock != null) {
+            BlockType blockType = containingBlock.getBlockType();
+
+            if (blockType.getImage() != null) { // If block has an image (Candy)
+                imageView.setImage(blockType.getImage());
+                imageView.setVisible(true);
+                colorFill.setFill(Color.TRANSPARENT);
+            } else { // If block uses color (Tetris)
+                colorFill.setFill(blockType.getColor());
+                imageView.setImage(null);
+            }
+        } else {
+            imageView.setImage(null);
+            colorFill.setFill(Color.TRANSPARENT);
         }
     }
+
 }
