@@ -11,6 +11,10 @@ public abstract class BlockType {
     private Color color; // Used for Tetris blocks
 
     // Constructor for Candy (image-based blocks)
+
+    public BlockType(){
+
+    }
     public BlockType(String imagePath, String typeIdentifier) {
         String resourcePath = imagePath.startsWith("/") ? imagePath : "/" + imagePath;
 

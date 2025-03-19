@@ -55,8 +55,8 @@ public class BoardView extends Application {
     }
 
     private void startGame(Stage primaryStage, String gameType, int numPlayers) {
-        int width = 5;
-        int height = 5;
+        int width = 3;
+        int height = 3;
         int tileSize = 50;
 
         Board board = new Board(tileSize);
