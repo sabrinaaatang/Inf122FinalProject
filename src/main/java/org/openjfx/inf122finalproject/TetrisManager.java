@@ -11,10 +11,15 @@ public class TetrisManager extends GameManager {
     private Block currentPiece;
     private boolean gameOver = false;
     private Timeline dropTimer;
+    private Runnable gameOverCallback;
     public TetrisManager(Board board) {
         this.board = board;
         spawnNewPiece();
 
+    }
+    @Override
+    public void setGameOverCallback(Runnable callback) {
+        this.gameOverCallback = callback;
     }
 
     private void startDropTimer() {
@@ -42,6 +47,16 @@ public class TetrisManager extends GameManager {
     @Override
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    private void triggerGameOver() {
+        gameOver = true;
+        if (dropTimer != null) {
+            dropTimer.stop();
+        }
+        if (gameOverCallback != null) {
+            gameOverCallback.run();  // notify BoardView
+        }
     }
 
     @Override
@@ -237,7 +252,7 @@ public class TetrisManager extends GameManager {
 
     private void checkPlacedTop() {
         if (currentPiece.getCentreOfMass().y <= 0) {
-            gameOver = true;
+            triggerGameOver();
         }
     }
 

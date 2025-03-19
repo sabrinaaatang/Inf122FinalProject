@@ -3,10 +3,16 @@ package org.openjfx.inf122finalproject;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class BoardView extends Application {
     private double pressX, pressY;
+    private Text gameOverText;
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -20,7 +26,18 @@ public class BoardView extends Application {
         GameManager gameManager;
 //        gameManager = new CandyCrushManager(board);
         gameManager = new TetrisManager(board);
-        Scene scene = new Scene(board, width * tileSize, height * tileSize);
+
+        gameOverText = new Text("Game Over");
+        gameOverText.setFont(new Font(40));
+        gameOverText.setFill(Color.RED);
+        gameOverText.setVisible(false);  // Initially hidden
+
+        StackPane root = new StackPane();
+        root.getChildren().addAll(board, gameOverText);
+
+        Scene scene = new Scene(root, width * tileSize, height * tileSize);
+
+        gameManager.setGameOverCallback(() -> gameOverText.setVisible(true));  // Update UI when game is over
 
         scene.setOnMousePressed((MouseEvent event) -> {
             if (gameManager instanceof TetrisManager) {
@@ -36,6 +53,7 @@ public class BoardView extends Application {
             double releaseY = event.getY();
             PlayerInput input = new PlayerInput(PlayerInput.InputSource.MOUSE, pressX, pressY, releaseX, releaseY, event);
             gameManager.handleInput(input);
+            checkGameOver(gameManager);
         });
 
         scene.setOnKeyPressed(event -> {
@@ -53,6 +71,13 @@ public class BoardView extends Application {
         primaryStage.show();
         board.requestFocus();
 
+    }
+
+    private void checkGameOver(GameManager gameManager) {
+        if (gameManager.isGameOver()) {
+            System.out.println("Game Over");
+            gameOverText.setVisible(true);
+        }
     }
 
 

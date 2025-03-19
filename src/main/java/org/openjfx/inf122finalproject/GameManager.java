@@ -4,4 +4,5 @@ public abstract class GameManager {
     public abstract boolean isGameOver();
     public abstract void updateBoard();
     public abstract void handleInput(PlayerInput input);
-}
+    public void setGameOverCallback(Runnable callback) {};
+    }
