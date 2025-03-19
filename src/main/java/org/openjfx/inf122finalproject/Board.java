@@ -1,4 +1,5 @@
 package org.openjfx.inf122finalproject;
+import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 
@@ -15,6 +16,10 @@ public class Board  extends GridPane {
         this.width = width;
         this.height = height;
         this.grid = new BoardPosition[height][width];
+
+        this.setHgap(0);
+        this.setVgap(0);
+        this.setAlignment(Pos.CENTER);
 
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
