@@ -83,26 +83,36 @@ package org.openjfx.inf122finalproject;
                 int endTileX = (int) (input.getEndX() / tileSize);
                 int endTileY = (int) (input.getEndY() / tileSize);
 
-
                 int targetX = 0;
                 int targetY = 0;
                 boolean executeAction = false;
-                if (Math.abs(endTileX - startTileX) == 1 && (endTileY - startTileY) == 0) {
+
+                if (Math.abs(endTileX - startTileX) == 1 && endTileY == startTileY) {
                     targetX = endTileX;
                     targetY = startTileY;
                     executeAction = true;
-                } else if ((endTileX - startTileX) == 0 && Math.abs(endTileY - startTileY) == 1) {
+                } else if (endTileX == startTileX && Math.abs(endTileY - startTileY) == 1) {
                     targetX = startTileX;
                     targetY = endTileY;
                     executeAction = true;
                 }
+
                 if (executeAction) {
+                    // Perform a tentative swap
                     TileManipulator manipulator = new TileSwap(board, startTileX, startTileY, targetX, targetY);
                     manipulator.execute();
+
+                    // Check if the swap results in a match
+                    if (isValidSwap(startTileX, startTileY, targetX, targetY)) {
+                        updateBoard();  // Proceed with the update
+                    } else {
+                        // Revert the swap if no match is found
+                        manipulator.execute();
+                    }
                 }
             }
-            updateBoard();
         }
+
 
         public void checkMatchesAndClear() {
             while (true) {
@@ -232,4 +242,9 @@ package org.openjfx.inf122finalproject;
     public int getScore() {
         return scoreManager.getScore(player);
     }
-}
+
+    private boolean isValidSwap(int x1, int y1, int x2, int y2) {boolean[][] matches = checkMatches();
+            return anyMatches(matches); // Swap is valid only if a match is found
+         }
+
+    }
