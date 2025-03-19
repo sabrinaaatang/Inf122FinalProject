@@ -47,7 +47,9 @@ public class CandyBlock extends Block {
         isMatchable = matchable;
     }
 
-
+    public static Block randomCandy() {
+        return new CandyBlock(candyTypes[rand.nextInt(candyTypes.length)]);
+    }
 
     @Override
     public String toString() {

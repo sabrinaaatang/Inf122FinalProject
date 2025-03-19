@@ -44,6 +44,10 @@ public abstract class Block {
         return isEmpty;
     }
 
+    public boolean isEmptyType() {
+        return type == BlockType.EMPTY_BLOCK;
+    }
+
     public void setType(BlockType type) {
         this.type = type;
     }

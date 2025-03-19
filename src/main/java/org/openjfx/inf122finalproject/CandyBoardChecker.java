@@ -1,6 +1,9 @@
 package org.openjfx.inf122finalproject;
 
-import java.util.ArrayList;
+import javafx.beans.property.ObjectProperty;
+import javafx.geometry.Pos;
+
+import java.util.*;
 
 public class CandyBoardChecker {
 
@@ -121,7 +124,7 @@ public class CandyBoardChecker {
         }
     }
 
-    /** need to check null list */
+    /** May return an empty list */
     public static ArrayList<Position> flattener(ArrayList<ArrayList<Position>> board) {
         ArrayList<Position> flattened = new ArrayList<>();
         for (ArrayList<Position> row : board) {
@@ -131,5 +134,81 @@ public class CandyBoardChecker {
             System.out.println("removed: " + pos);
         }
         return flattened;
+    }
+
+    public static void findMatches(ObjectProperty<Block[][]> blocks, ArrayList<Position> matchedPos) {
+        final int minClearCount = 3;
+        Block[][] board = blocks.get();
+        int boardWidth = board[0].length;
+        int boardHeight = board.length;
+        boolean[][] toClear = new boolean[boardHeight][boardWidth];
+
+        // Horizontal check
+        for (int row = 0; row < boardHeight; row++) {
+            int count = 1;
+            for (int col = 1; col < boardWidth; col++) {
+                Block prev = board[row][col - 1];
+                Block current = board[row][col];
+                if (blocksMatch(prev, current)) {
+                    count++;
+                } else {
+                    if (count >= minClearCount) {
+                        for (int c = col - count; c < col; c++) {
+                            toClear[row][c] = true;
+                        }
+                    }
+                    count = 1;
+                }
+            }
+            if (count >= minClearCount) {
+                for (int c = boardWidth - count; c < boardWidth; c++) {
+                    toClear[row][c] = true;
+                }
+            }
+        }
+
+        // Vertical check
+        for (int col = 0; col < boardWidth; col++) {
+            int count = 1;
+            for (int row = 1; row < boardHeight; row++) {
+                Block prev = board[row - 1][col];
+                Block current = board[row][col];
+                if (blocksMatch(prev, current)) {
+                    count++;
+                } else {
+                    if (count >= minClearCount) {
+                        for (int r = row - count; r < row; r++) {
+                            toClear[r][col] = true;
+                        }
+                    }
+                    count = 1;
+                }
+            }
+            if (count >= minClearCount) {
+                for (int r = boardHeight - count; r < boardHeight; r++) {
+                    toClear[r][col] = true;
+                }
+            }
+        }
+
+        bool2DToPositionList(toClear, matchedPos);
+    }
+
+    private static boolean blocksMatch(Block prev, Block curr) {
+        if(prev.isEmptyType() || curr.isEmptyType()) { return false ; }
+
+        return prev.getType() == curr.getType();
+    }
+
+    private static void bool2DToPositionList(boolean[][] toClear, ArrayList<Position> matchedPos) {
+        for(int i = 0; i < toClear.length; i++) {
+            for(int j = 0; j < toClear[i].length; j++) {
+                if(toClear[i][j]) {
+                    matchedPos.add(new Position(j, i));
+                }
+            }
+        }
+
+//        return positions;
     }
 }

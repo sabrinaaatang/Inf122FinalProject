@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
 public class Tile extends VBox {
     private Position position;
     private boolean[] walls = new boolean[4];  // walls on direction N, E, S, W
-    private Position dropDirection;          // An auto dropable block in this tile will drop towards this direction;
+    private Position dropDirection = new Position(0, 1);   // Downward. An auto dropable block in this tile will drop towards this direction;
     private boolean isPlaceable = true;
     private boolean containsEmpty = true;
 

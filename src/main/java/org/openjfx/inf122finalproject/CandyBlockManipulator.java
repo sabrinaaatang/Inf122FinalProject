@@ -5,17 +5,19 @@ import javafx.beans.property.ObjectProperty;
 import java.util.ArrayList;
 
 public class CandyBlockManipulator implements BlockManipulator {
-    private Position p1;
+    private Position currentPos;
     private final ObjectProperty<Block[][]> blockBoard;
+    private Board gridBoard;
 
-    public CandyBlockManipulator(Position pos, ObjectProperty<Block[][]> blocksBoard) {
+    public CandyBlockManipulator(Position pos, ObjectProperty<Block[][]> blocksBoard, Board gridBoard) {
         this.blockBoard = blocksBoard;
-        this.p1 = p1;
+        this.currentPos = pos;
+        this.gridBoard = gridBoard;
     }
 
     @Override
-    public boolean blockMove() {
-        return false;
+    public boolean blockMove(Position dest) {
+        return BlockMove.performMove(this.gridBoard.getGrid(), currentPos, dest, blockBoard);
     }
 
     @Override
@@ -30,28 +32,7 @@ public class CandyBlockManipulator implements BlockManipulator {
 
     @Override
     public boolean blockSwap(Position p2) {
-        int r1 = p1.getRow();
-        int r2 = p2.getRow();
-        int c1 = p1.getColumn();
-        int c2 = p2.getColumn();
-        Block[][] b = blockBoard.get();
-        // swap should be performed between two existing block
-        if (b[r1][c1].isEmpty() || b[r2][c2].isEmpty() ) {
-            System.out.println("Fail to swap because of empty block(s).");
-            return false;
-        }
-
-        /* swap */
-        Block block1 = b[r1][c1];
-        b[r1][c1] = b[r2][c2];
-        b[r2][c2] = block1;
-
-        blockBoard.set(null);
-        /* reset 2D block array to ObjectProperty to trigger event listener */
-        blockBoard.set(b);
-//        System.out.println(  b[r2][c2] + " | " + b[r1][c1] );
-//        System.out.println( "Blocks at position " + p1 + ", " + p2 +  "Swapped blocks success.");
-        return true;
+        return BlockSwap.performSwap(currentPos, p2, blockBoard);
     }
 
     @Override

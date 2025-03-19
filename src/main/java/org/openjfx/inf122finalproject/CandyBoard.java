@@ -23,4 +23,16 @@ public class CandyBoard extends Board {
         }
     }
 
+    /** used for filling a rows x cols grid **/
+    public static Block[][] randomCandyBlock(int rows, int cols) {
+        Block[][] randBlocks = new Block[rows][cols];
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Block b = CandyBlock.randomCandy();
+                randBlocks[row][col] = b;
+            }
+        }
+        return randBlocks;
+    }
+
 }

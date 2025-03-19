@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface BlockManipulator {
     /** return boolean since manipulation might fail */
-    boolean blockMove();
+    boolean blockMove(Position dest);
 
     boolean blockRotate();
 

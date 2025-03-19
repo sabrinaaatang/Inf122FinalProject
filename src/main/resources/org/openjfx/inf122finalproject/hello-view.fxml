@@ -20,7 +20,10 @@
     </padding>
 
 <!--    put component here to test  -->
-    <CandyCrushView/>
+    <CandyCrushView
+            GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <CandyCrushView
+            GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 <!--    <TetrisView/>-->
 <!--    <BoardComponent/>-->
 
