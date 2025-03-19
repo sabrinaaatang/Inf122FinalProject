@@ -98,20 +98,31 @@ package org.openjfx.inf122finalproject;
                 }
 
                 if (executeAction) {
-                    // Perform a tentative swap
                     TileManipulator manipulator = new TileSwap(board, startTileX, startTileY, targetX, targetY);
-                    manipulator.execute();
+                    manipulator.execute(); // animate swap
 
-                    // Check if the swap results in a match
-                    if (isValidSwap(startTileX, startTileY, targetX, targetY)) {
-                        updateBoard();  // Proceed with the update
-                    } else {
-                        // Revert the swap if no match is found
-                        manipulator.execute();
-                    }
+                    // delay before checking the validity of the move
+                    int finalTargetX = targetX;
+                    int finalTargetY = targetY;
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(300); // delay for animation
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (isValidSwap(startTileX, startTileY, finalTargetX, finalTargetY)) {
+                            updateBoard(); // keep the swap and update the board if it is a valid match
+                        } else {
+                            // reverse the swap with animation for invalid move
+                            TileManipulator reverseManipulator = new TileSwap(board, startTileX, startTileY, finalTargetX, finalTargetY);
+                            reverseManipulator.execute();
+                        }
+                    }).start();
                 }
             }
         }
+
 
 
         public void checkMatchesAndClear() {
@@ -179,7 +190,6 @@ package org.openjfx.inf122finalproject;
                         count++;
                     } else {
                         if (count >= minClearCount) {
-                            System.out.println("[MATCH] Found vertical match of " + count + " at column " + col + " from row " + (row - count) + " to " + (row - 1));
                             for (int r = row - count; r < row; r++) {
                                 toClear[r][col] = true;
                             }
@@ -189,7 +199,6 @@ package org.openjfx.inf122finalproject;
                 }
                 // Ensure last group is checked
                 if (count >= minClearCount) {
-                    System.out.println("[MATCH] Found vertical match of " + count + " at column " + col + " from row " + (boardHeight - count) + " to " + (boardHeight - 1));
                     for (int r = boardHeight - count; r < boardHeight; r++) {
                         toClear[r][col] = true;
                     }
@@ -244,7 +253,7 @@ package org.openjfx.inf122finalproject;
     }
 
     private boolean isValidSwap(int x1, int y1, int x2, int y2) {boolean[][] matches = checkMatches();
-            return anyMatches(matches); // Swap is valid only if a match is found
+            return anyMatches(matches); // swap is valid only if a match is found
          }
 
     }
