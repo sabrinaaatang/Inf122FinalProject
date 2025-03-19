@@ -57,14 +57,12 @@ public class CandyModel extends GameModel {
                     Timeline timeline2 = new Timeline();
                     KeyFrame kf = new KeyFrame(Duration.seconds(0.5), ev -> {
                         if (!matches.isEmpty()) {  // Check condition
-                            matches.clear();
-
-
                             Timeline stepTimeline = new Timeline(
+                                    new KeyFrame(Duration.seconds(0.0), e1 -> matches.clear()),
                                     new KeyFrame(Duration.seconds(0.1), e1 -> CandyBoardChecker.findMatches(this.blocks, matches)),
-                                    new KeyFrame(Duration.seconds(0.4), e1 -> BlockAnnihilation.perform(matches, this.blocks, this.candyBoard.getGrid())),
-                                    new KeyFrame(Duration.seconds(0.7), e2 -> autoDrop(this.blocks)),
-                                    new KeyFrame(Duration.seconds(1.0), e3 -> refillBoard(this.blocks))
+                                    new KeyFrame(Duration.seconds(0.3), e1 -> BlockAnnihilation.perform(matches, this.blocks, this.candyBoard.getGrid())),
+                                    new KeyFrame(Duration.seconds(0.6), e2 -> autoDrop(this.blocks)),
+                                    new KeyFrame(Duration.seconds(0.9), e3 -> refillBoard(this.blocks))
                             );
 
                             stepTimeline.setOnFinished(e4 -> {
