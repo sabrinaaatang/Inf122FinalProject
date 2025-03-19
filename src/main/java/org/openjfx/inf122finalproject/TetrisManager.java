@@ -224,7 +224,6 @@ public class TetrisManager extends GameManager {
     private void checkPlacedTop() {
         if (currentPiece.getCentreOfMass().y <= 0) {
             gameOver = true;
-            System.out.println("game ended");
         }
     }
 
