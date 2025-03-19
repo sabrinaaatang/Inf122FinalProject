@@ -38,9 +38,21 @@ public class BoardView extends Application {
             gameManager.handleInput(input);
         });
 
+        scene.setOnKeyPressed(event -> {
+            System.out.println("Key Pressed: " + event.getCode());  // Add this line to verify
+            if (gameManager instanceof TetrisManager) {
+                ((TetrisManager) gameManager).pauseDropTimer();
+                PlayerInput input = new PlayerInput(PlayerInput.InputSource.KEYBOARD, event.getCode());
+                gameManager.handleInput(input);  // Pass the keyboard input to TetrisManager
+            }
+        });
+
+
         primaryStage.setTitle("Tile Matching Game Environment");
         primaryStage.setScene(scene);
         primaryStage.show();
+        board.requestFocus();
+
     }
 
 

@@ -55,6 +55,20 @@ public class TetrisManager extends GameManager {
 
         if (currentPiece == null || gameOver) return;
         String actionType = null;
+
+        if (input.getSource() == PlayerInput.InputSource.KEYBOARD) {
+            actionType = switch (input.getKeyCode()) {
+                case LEFT -> "MOVE_LEFT";
+                case RIGHT -> "MOVE_RIGHT";
+                case UP -> // Add rotation with up arrow
+                        "ROTATE";
+                case DOWN -> // Faster drop with down arrow
+                        "DROP";
+                default -> null;
+            };
+        }
+
+
         if (input.getSource() == PlayerInput.InputSource.MOUSE) {
             int tileSize = board.getTileSize();
             int startTileX = (int) (input.getStartX() / tileSize);
