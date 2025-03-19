@@ -1,10 +1,10 @@
 package org.openjfx.inf122finalproject;
 
+import java.util.Random;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-
-import java.util.Random;
 
 public class TetrisManager extends GameManager {
     private final Board board;
@@ -212,10 +212,19 @@ public class TetrisManager extends GameManager {
             currentPiece.getCentreOfMass().y -= 1;
             currentPiece.placeBlock(board);
 
+            checkPlacedTop();
+
             checkLineClear();
             spawnNewPiece();
         } else {
             board.updateBoard();
+        }
+    }
+
+    private void checkPlacedTop() {
+        if (currentPiece.getCentreOfMass().y <= 0) {
+            gameOver = true;
+            System.out.println("game ended");
         }
     }
 
