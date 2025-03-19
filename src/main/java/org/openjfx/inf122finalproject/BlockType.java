@@ -13,7 +13,6 @@ public abstract class BlockType {
     // Constructor for Candy (image-based blocks)
     public BlockType(String imagePath, String typeIdentifier) {
         String resourcePath = imagePath.startsWith("/") ? imagePath : "/" + imagePath;
-        System.out.println("Loading image: " + resourcePath);
 
         URL imageUrl = getClass().getResource(resourcePath);
         if (imageUrl == null) {
