@@ -5,6 +5,10 @@ import java.util.Random;
 
 public class LShape extends BlockType {
 
+    private static final Color[] COLORS = {
+            Color.ORANGE, Color.BLUE, Color.RED, Color.GREEN, Color.PURPLE, Color.CYAN, Color.YELLOW
+    };
+
     public enum LShapeVariant {
         RIGHT_L(new int[][] { {1, 0}, {1, 1} }),
         INVERTED_RIGHT_L(new int[][] { {1, 1}, {1, 0} }),
@@ -22,13 +26,19 @@ public class LShape extends BlockType {
         public int[][] getShape() {
             return shape;
         }
+
+        public static LShapeVariant getNextVariant(LShapeVariant current) {
+            LShapeVariant[] variants = values();
+            int nextIndex = (current.ordinal() + 1) % variants.length;
+            return variants[nextIndex];
+        }
     }
 
     private int[][] shapeMatrix;
     private LShapeVariant currentVariant;
 
     public LShape() {
-        super(Color.ORANGE);
+        super(randomColor());
         LShapeVariant[] variants = LShapeVariant.values();
         Random rand = new Random();
         currentVariant = variants[rand.nextInt(variants.length)];
@@ -42,30 +52,7 @@ public class LShape extends BlockType {
     }
 
     public LShape getRotated() {
-        LShapeVariant newVariant;
-        switch (currentVariant) {
-            case RIGHT_L:
-                newVariant = LShapeVariant.INVERTED_RIGHT_L;
-                break;
-            case INVERTED_RIGHT_L:
-                newVariant = LShapeVariant.INVERTED_LEFT_L;
-                break;
-            case INVERTED_LEFT_L:
-                newVariant = LShapeVariant.LEFT_L;
-                break;
-            case LEFT_L:
-                newVariant = LShapeVariant.RIGHT_L;
-                break;
-            case VERTICAL:
-                newVariant = LShapeVariant.HORIZONTAL;
-                break;
-            case HORIZONTAL:
-                newVariant = LShapeVariant.VERTICAL;
-                break;
-            default:
-                newVariant = currentVariant;
-                break;
-        }
+        LShapeVariant newVariant = LShapeVariant.getNextVariant(currentVariant);
         return new LShape(newVariant, super.getColor());
     }
 
@@ -87,5 +74,10 @@ public class LShape extends BlockType {
     @Override
     public int getEffectiveHeight() {
         return shapeMatrix.length;
+    }
+
+    private static Color randomColor() {
+        Random rand = new Random();
+        return COLORS[rand.nextInt(COLORS.length)];
     }
 }
