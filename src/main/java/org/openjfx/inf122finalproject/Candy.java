@@ -4,18 +4,24 @@ import java.util.Random;
 
 public class Candy extends BlockType {
     private static final String[] COLORS = { "brown", "choco", "cream", "icecream", "pink", "real", "yellow" };
+    private static final Random rand = new Random();
+
+    private final String color;
 
     public Candy() {
-        super(getRandomImagePath(), getRandomColor());
+        this(getRandomColor());
+    }
+
+    private Candy(String color) {
+        super(getImagePath(color), color);
+        this.color = color;
     }
 
     private static String getRandomColor() {
-        Random rand = new Random();
         return COLORS[rand.nextInt(COLORS.length)];
     }
 
-    private static String getRandomImagePath() {
-        String color = getRandomColor();
+    private static String getImagePath(String color) {
         return "/org/openjfx/inf122finalproject/candy/" + color + "_candy.png";
     }
 

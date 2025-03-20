@@ -1,5 +1,6 @@
 package org.openjfx.inf122finalproject;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -54,6 +55,8 @@ public class BoardView extends Application {
         primaryStage.show();
     }
 
+    private AnimationTimer gameLoop;
+
     private void startGame(Stage primaryStage, String gameType, int numPlayers) {
         int width = 10;
         int height = 10;
@@ -94,15 +97,25 @@ public class BoardView extends Application {
         gameScene.setOnMouseReleased(this::handleMouseRelease);
         gameScene.setOnKeyPressed(event -> handleKeyPress(event));
 
-        // Game Over callback
-        gameManager.setGameOverCallback(() -> {
-            gameOverText.setVisible(true);
-            updateScore();  // Show final score when game is over
-        });
-
         primaryStage.setScene(gameScene);
         primaryStage.setTitle(gameType + " - " + numPlayers + " Player(s)");
         primaryStage.show();
+
+        // Start game loop to check for game over
+        startGameLoop();
+    }
+
+    private void startGameLoop() {
+        gameLoop = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (gameManager.isGameOver()) {
+                    gameOverText.setVisible(true);
+                    gameLoop.stop(); // Stop checking after game over
+                }
+            }
+        };
+        gameLoop.start();
     }
 
     private void handleMousePress(MouseEvent event) {
