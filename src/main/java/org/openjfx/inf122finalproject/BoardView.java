@@ -38,6 +38,8 @@ public class BoardView extends Application {
 
     private int numPlayers = 1; // Default to 1 player
     private int currentPlayer = 1; // Start with Player 1
+    final static int WINDOW_WIDTH = 1000;
+    final static int WINDOW_HEIGHT = 800;
 
     /**
      * JavaFX application entry point. Displays the game selection menu.
@@ -194,7 +196,7 @@ public class BoardView extends Application {
 
         gameManager = gameType.equals("Candy Crush") ? new CandyCrushManager(board) : new TetrisManager(board);
 
-        Scene gameScene = new Scene(root, width * tileSize, height * tileSize);
+        Scene gameScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         gameScene.setOnMousePressed(this::handleMousePress);
         gameScene.setOnMouseReleased(this::handleMouseRelease);
