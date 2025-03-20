@@ -158,8 +158,9 @@ public class BoardView extends Application {
     private void startGame(Stage primaryStage, String gameType, int numPlayers) {
         this.numPlayers = numPlayers;
         this.currentPlayer = 1;
-        launchGame(primaryStage, gameType);
+        showReadyScreen(primaryStage, gameType, currentPlayer);
     }
+
 
     /**
      * Launches the game and initializes the board.
@@ -168,8 +169,8 @@ public class BoardView extends Application {
      * @param gameType The type of game being played
      */
     private void launchGame(Stage primaryStage, String gameType) {
-        int width = 10;
-        int height = 10;
+        int width = 5;
+        int height = 5;
         int tileSize = 50;
 
         Board board = new Board(tileSize);
@@ -203,6 +204,7 @@ public class BoardView extends Application {
         primaryStage.setTitle(gameType + " - Player " + currentPlayer);
         primaryStage.show();
 
+        centerWindow(primaryStage);
         startGameLoop(primaryStage, gameType);
     }
 
@@ -217,19 +219,68 @@ public class BoardView extends Application {
 
                 // Check for game-over condition
                 if (gameManager.isGameOver()) {
+                    gameOverText.setText("Player " + currentPlayer + " Game Over!");
                     gameOverText.setVisible(true);
                     gameLoop.stop();
 
-                    // If we have two players and it's Player 1's turn, switch to Player 2
+                    // If it's Player 1 and there's a Player 2, delay transition
                     if (numPlayers == 2 && currentPlayer == 1) {
                         currentPlayer = 2; // Switch to Player 2
-                        launchGame(primaryStage, gameType); // Start new game for Player 2
+
+                        // Store window position and size before switching
+                        double windowX = primaryStage.getX();
+                        double windowY = primaryStage.getY();
+                        double windowWidth = primaryStage.getWidth();
+                        double windowHeight = primaryStage.getHeight();
+
+                        new Thread(() -> {
+                            try {
+                                Thread.sleep(2000); // Wait 2 seconds before switching
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            javafx.application.Platform.runLater(() -> {
+                                showReadyScreen(primaryStage, gameType, 2);
+
+                                // Restore window position and size
+                                primaryStage.setX(windowX);
+                                primaryStage.setY(windowY);
+                                primaryStage.setWidth(windowWidth);
+                                primaryStage.setHeight(windowHeight);
+                            });
+                        }).start();
                     }
                 }
             }
         };
         gameLoop.start();
     }
+
+
+    private void showReadyScreen(Stage primaryStage, String gameType, int playerNumber) {
+        Label readyLabel = new Label("Ready Player " + playerNumber);
+        readyLabel.setFont(new Font("Arial", 30));
+        readyLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
+
+        Button startButton = new Button("Start");
+        startButton.setOnAction(e -> {
+            launchGame(primaryStage, gameType);
+        });
+
+        VBox readyLayout = new VBox(20, readyLabel, startButton);
+        readyLayout.setAlignment(Pos.CENTER);
+        readyLayout.setStyle("-fx-background-color: #222; -fx-text-fill: white;");
+
+        Scene readyScene = new Scene(readyLayout, 400, 300);
+        primaryStage.setScene(readyScene);
+        primaryStage.setTitle("Ready Player " + playerNumber);
+        centerWindow(primaryStage);
+        primaryStage.show();
+    }
+
+
+
 
 
     /**
@@ -288,6 +339,16 @@ public class BoardView extends Application {
             scoreLabel.setText("Score: " + gameManager.getScore() + " (Player " + currentPlayer + ")");
         }
     }
+
+    /**
+     *  Center the window
+     * @param stage The stage
+     */
+    private void centerWindow(Stage stage) {
+        stage.setX((javafx.stage.Screen.getPrimary().getVisualBounds().getWidth() - stage.getWidth()) / 2);
+        stage.setY((javafx.stage.Screen.getPrimary().getVisualBounds().getHeight() - stage.getHeight()) / 2);
+    }
+
 
     /**
      * Main method to launch the JavaFX application.
