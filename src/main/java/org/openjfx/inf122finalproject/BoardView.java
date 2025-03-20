@@ -245,7 +245,7 @@ public class BoardView extends Application {
 
                         new Thread(() -> {
                             try {
-                                Thread.sleep(2000); // wait 2 seconds before switching
+                                Thread.sleep(1000); // wait 1 seconds before switching
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -267,8 +267,6 @@ public class BoardView extends Application {
         gameLoop.start();
     }
 
-
-
     private void showReadyScreen(Stage primaryStage, String gameType, int playerNumber) {
         Label readyLabel = new Label("Ready Player " + playerNumber);
         readyLabel.setFont(new Font("Arial", 30));
@@ -289,10 +287,6 @@ public class BoardView extends Application {
         centerWindow(primaryStage);
         primaryStage.show();
     }
-
-
-
-
 
     /**
      * Handles mouse press events for tile interaction.
