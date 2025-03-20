@@ -36,6 +36,9 @@ public class BoardView extends Application {
     private String currUser;
     private Label incorrectPass;
 
+    private int numPlayers = 1; // Default to 1 player
+    private int currentPlayer = 1; // Start with Player 1
+
     /**
      * JavaFX application entry point. Displays the game selection menu.
      *
@@ -52,10 +55,8 @@ public class BoardView extends Application {
      * @param primaryStage The main stage to display the UI
      */
     private void prepareLoginScreen(Stage primaryStage) {
-        // Prepares member variables for the login screen
         userToPass = new HashMap<>();
         incorrectPass = new Label();
-
         showLoginScreen(primaryStage);
     }
 
@@ -66,22 +67,19 @@ public class BoardView extends Application {
      */
     private void showLoginScreen(Stage primaryStage) {
         Button logInButton = new Button("Log In");
-
         TextField userField = new TextField();
         userField.setAlignment(Pos.CENTER);
         PasswordField passField = new PasswordField();
         passField.setAlignment(Pos.CENTER);
-
         logInButton.setOnAction(e -> processLogin(primaryStage, userField.getText(), passField.getText()));
 
         HBox button = new HBox(10, logInButton);
         button.setAlignment(Pos.CENTER);
 
-        // Asks the user to enter their username and password
         VBox loginLayout = new VBox(10,
-            new Label("Enter existing or new username:"), userField,
-            new Label("Enter password:"), passField,
-            button, incorrectPass);
+                new Label("Enter existing or new username:"), userField,
+                new Label("Enter password:"), passField,
+                button, incorrectPass);
         loginLayout.setAlignment(Pos.CENTER);
 
         Scene loginScene = new Scene(loginLayout, 400, 400);
@@ -99,30 +97,18 @@ public class BoardView extends Application {
      */
     private void processLogin(Stage primaryStage, String userText, String passText) {
         boolean enterMenu = true;
-        
-        // If the username already exists on record
         if (userToPass.containsKey(userText)) {
-            String actualPass = userToPass.get(userText);
-
-            // If the inputted password doesn't match the password on record,
-            // it returns back to the login screen
-            if (!(actualPass.equals(passText))) {
+            if (!userToPass.get(userText).equals(passText)) {
                 enterMenu = false;
             }
-        }
-        // If the username doesn't exist, add a new username / password pair to the record
-        else {
+        } else {
             userToPass.put(userText, passText);
         }
 
         if (enterMenu) {
-            // Goes to the menu screen
             currUser = userText;
             showMenu(primaryStage);
-        }
-        else {
-            // When going back to the login screen,
-            // a text shows an incorrect password message
+        } else {
             incorrectPass.setText("Incorrect password");
             showLoginScreen(primaryStage);
         }
@@ -134,15 +120,12 @@ public class BoardView extends Application {
      * @param primaryStage The main stage to display the menu
      */
     private void showMenu(Stage primaryStage) {
-        // Dropdown for game selection
         ComboBox<String> gameTypeBox = new ComboBox<>();
         gameTypeBox.getItems().addAll("Candy Crush", "Tetris");
         gameTypeBox.setValue("Candy Crush");
 
-        // Show the current username
         Label userLabel = new Label("User: " + currUser);
 
-        // Buttons for player selection
         Button onePlayerButton = new Button("1 Player");
         Button twoPlayerButton = new Button("2 Players");
 
@@ -173,6 +156,18 @@ public class BoardView extends Application {
      * @param numPlayers   The number of players
      */
     private void startGame(Stage primaryStage, String gameType, int numPlayers) {
+        this.numPlayers = numPlayers;
+        this.currentPlayer = 1;
+        launchGame(primaryStage, gameType);
+    }
+
+    /**
+     * Launches the game and initializes the board.
+     *
+     * @param primaryStage The main stage to display the game
+     * @param gameType The type of game being played
+     */
+    private void launchGame(Stage primaryStage, String gameType) {
         int width = 10;
         int height = 10;
         int tileSize = 50;
@@ -180,14 +175,11 @@ public class BoardView extends Application {
         Board board = new Board(tileSize);
         board.initialize(width, height);
 
-        // Initialize score label
-        scoreLabel = new Label("Score: 0");
+        scoreLabel = new Label("Score: 0 (Player " + currentPlayer + ")");
         scoreLabel.setFont(new Font("Arial", 30));
         scoreLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
-        scoreLabel.setAlignment(Pos.CENTER);
 
-        // Initialize game over text
-        gameOverText = new Text("Game Over");
+        gameOverText = new Text("Game Over! Player " + currentPlayer + " lost.");
         gameOverText.setFont(new Font(40));
         gameOverText.setFill(Color.RED);
         gameOverText.setVisible(false);
@@ -199,42 +191,46 @@ public class BoardView extends Application {
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: #333;");
 
-        // Choose the appropriate game manager
-        if (gameType.equals("Candy Crush")) {
-            gameManager = new CandyCrushManager(board);
-        } else {
-            gameManager = new TetrisManager(board);
-        }
+        gameManager = gameType.equals("Candy Crush") ? new CandyCrushManager(board) : new TetrisManager(board);
 
-        // Set up scene
         Scene gameScene = new Scene(root, width * tileSize, height * tileSize);
+
         gameScene.setOnMousePressed(this::handleMousePress);
         gameScene.setOnMouseReleased(this::handleMouseRelease);
         gameScene.setOnKeyPressed(event -> handleKeyPress(event));
 
         primaryStage.setScene(gameScene);
-        primaryStage.setTitle(gameType + " - " + numPlayers + " Player(s)");
+        primaryStage.setTitle(gameType + " - Player " + currentPlayer);
         primaryStage.show();
 
-        // Start game loop to monitor game-over state
-        startGameLoop();
+        startGameLoop(primaryStage, gameType);
     }
 
     /**
-     * Starts the game loop to check for game-over conditions.
+     * Starts the game loop to check for game-over conditions and update the score.
      */
-    private void startGameLoop() {
+    private void startGameLoop(Stage primaryStage, String gameType) {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                updateScore();
+
+                // Check for game-over condition
                 if (gameManager.isGameOver()) {
                     gameOverText.setVisible(true);
-                    gameLoop.stop(); // Stop checking once the game is over
+                    gameLoop.stop();
+
+                    // If we have two players and it's Player 1's turn, switch to Player 2
+                    if (numPlayers == 2 && currentPlayer == 1) {
+                        currentPlayer = 2; // Switch to Player 2
+                        launchGame(primaryStage, gameType); // Start new game for Player 2
+                    }
                 }
             }
         };
         gameLoop.start();
     }
+
 
     /**
      * Handles mouse press events for tile interaction.
@@ -259,9 +255,11 @@ public class BoardView extends Application {
     private void handleMouseRelease(MouseEvent event) {
         double releaseX = event.getX();
         double releaseY = event.getY();
-        PlayerInput input = new PlayerInput(PlayerInput.InputSource.MOUSE, pressX, pressY, releaseX, releaseY, event);
-        gameManager.handleInput(input);
-        updateScore();
+
+        if (gameManager != null) {
+            PlayerInput input = new PlayerInput(PlayerInput.InputSource.MOUSE, pressX, pressY, releaseX, releaseY, event);
+            gameManager.handleInput(input);
+        }
     }
 
     /**
@@ -272,8 +270,11 @@ public class BoardView extends Application {
      */
     private void handleKeyPress(javafx.scene.input.KeyEvent event) {
         System.out.println("Key Pressed: " + event.getCode());
-        if (gameManager instanceof TetrisManager) {
-            ((TetrisManager) gameManager).pauseDropTimer();
+
+        if (gameManager != null) {
+            if (gameManager instanceof TetrisManager) {
+                ((TetrisManager) gameManager).pauseDropTimer();
+            }
             PlayerInput input = new PlayerInput(PlayerInput.InputSource.KEYBOARD, event.getCode());
             gameManager.handleInput(input);
         }
@@ -283,7 +284,9 @@ public class BoardView extends Application {
      * Updates the score display based on the current game score.
      */
     private void updateScore() {
-        scoreLabel.setText("Score: " + gameManager.getScore());
+        if (gameManager != null) {
+            scoreLabel.setText("Score: " + gameManager.getScore() + " (Player " + currentPlayer + ")");
+        }
     }
 
     /**
