@@ -29,11 +29,12 @@ public class Block {
      * The block is placed based on its defined shape.
      *
      * @param board The game board on which the block is placed
-     * @return true if the block was placed successfully, false if it overlaps with existing blocks
+     * @return OUT_OF_BOUND if the block was out of bound, OCCUPIED if it overlaps with existing blocks, NO_ERR -> success
      */
-    public boolean placeBlock(Board board) {
+    public CantPlaceErrorType placeBlock(Board board) {
         if (isOutOfBounds(board)) {
-            return false;
+            System.out.println("Block out of bounds");
+            return CantPlaceErrorType.OUT_OF_BOUND;
         }
         int[][] shape = blockType.getRotationStates();
         int shapeRows = shape.length;
@@ -53,12 +54,13 @@ public class Block {
                         tile.setContainingBlock(this);
                     } else {
                         // Block placement fails due to existing block presence
-                        return false;
+                        System.out.println("Existing Block");
+                        return CantPlaceErrorType.OCCUPIED;
                     }
                 }
             }
         }
-        return true;
+        return CantPlaceErrorType.NO_ERR;       // badass
     }
 
     /**

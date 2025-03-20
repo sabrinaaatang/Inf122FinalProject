@@ -199,9 +199,9 @@ public class TetrisManager extends GameManager {
         int spawnY = 0;
 
         Block newBlock = new Block(blockType, spawnX, spawnY);
-        boolean isBlockPlaced = newBlock.placeBlock(board);
+        CantPlaceErrorType type = newBlock.placeBlock(board);
 
-        if (!isBlockPlaced) {
+        if (type != CantPlaceErrorType.NO_ERR) {
             gameOver = true;
             dropTimer.stop();
             return;
@@ -220,16 +220,23 @@ public class TetrisManager extends GameManager {
         currentPiece.removeBlock(board);
         currentPiece.getCentreOfMass().x += posCount;
 
-        boolean isBlockPlaced = currentPiece.placeBlock(board);
+        CantPlaceErrorType type = currentPiece.placeBlock(board);
 
-        if (!isBlockPlaced) {
+
+
+        if (type == CantPlaceErrorType.OCCUPIED) {
             dropTimer.stop();
             currentPiece.removeBlock(board);
             currentPiece.getCentreOfMass().x -= posCount;
             currentPiece.placeBlock(board);
             checkLineClear();
             spawnNewPiece();
-        } else {
+        } else if (type == CantPlaceErrorType.OUT_OF_BOUND) {
+            currentPiece.removeBlock(board);
+            currentPiece.getCentreOfMass().x -= posCount;
+            currentPiece.placeBlock(board);
+        }
+        else{
             board.updateBoard();
         }
     }
@@ -240,7 +247,7 @@ public class TetrisManager extends GameManager {
         currentPiece.removeBlock(board);
         currentPiece = newBlock;
 
-        if (!newBlock.placeBlock(board)) {
+        if (newBlock.placeBlock(board) != CantPlaceErrorType.NO_ERR) {
             newBlock.removeBlock(board);
             currentPiece.placeBlock(board);
         }
@@ -251,7 +258,7 @@ public class TetrisManager extends GameManager {
         currentPiece.removeBlock(board);
         currentPiece.getCentreOfMass().y += 1;
 
-        if (!currentPiece.placeBlock(board)) {
+        if (currentPiece.placeBlock(board) != CantPlaceErrorType.NO_ERR) {
             dropTimer.stop();
             currentPiece.removeBlock(board);
             currentPiece.getCentreOfMass().y -= 1;
