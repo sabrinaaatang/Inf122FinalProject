@@ -205,7 +205,6 @@ public class CandyCrushManager extends GameManager {
                     count++;
                 } else {
                     if (count >= minClearCount) {
-                        System.out.println("[MATCH] Found horizontal match of " + count + " at row " + row + " from col " + (col - count) + " to " + (col - 1));
                         for (int c = col - count; c < col; c++) {
                             toClear[row][c] = true;
                         }
@@ -215,7 +214,6 @@ public class CandyCrushManager extends GameManager {
             }
             // Ensure last group is checked
             if (count >= minClearCount) {
-                System.out.println("[MATCH] Found horizontal match of " + count + " at row " + row + " from col " + (boardWidth - count) + " to " + (boardWidth - 1));
                 for (int c = boardWidth - count; c < boardWidth; c++) {
                     toClear[row][c] = true;
                 }
@@ -288,14 +286,77 @@ public class CandyCrushManager extends GameManager {
                 .equals(t2.getContainingBlock().getBlockType().getTypeIdentifier());
     }
 
-    /**
-     * Determines whether the game is over.
-     *
-     * @return false, since Candy Crush typically does not have a defined end state
-     */
     @Override
     public boolean isGameOver() {
-        return false;
+        boolean[][] matches = checkMatches();
+        if (anyMatches(matches)) {
+            return false;
+        }
+
+        int boardWidth = board.getBoardWidth();
+        int boardHeight = board.getBoardHeight();
+
+        // Check for possible valid swaps
+        for (int row = 0; row < boardHeight; row++) {
+            for (int col = 0; col < boardWidth; col++) {
+                Tile tile = board.getTileAt(col, row);
+                if (tile == null || tile.getContainingBlock() == null) {
+                    continue;
+                }
+
+                // swap with right neighbor
+                if (col < boardWidth - 1 && canSwapCreateMatch(col, row, col + 1, row)) {
+                    return false;
+                }
+                // swap with bottom neighbor
+                if (row < boardHeight - 1 && canSwapCreateMatch(col, row, col, row + 1)) {
+                    return false;
+                }
+                // swap with top neighbor (only affects non-bottom rows)
+                if (row > 0 && canSwapCreateMatch(col, row, col, row - 1)) {
+                    return false;
+                }
+            }
+        }
+        System.out.println("GAMEOVA");
+        return true;
+    }
+
+    /**
+     * Checks if swapping two tiles would create a match.
+     *
+     * @param x1 First tile x-coordinate
+     * @param y1 First tile y-coordinate
+     * @param x2 Second tile x-coordinate
+     * @param y2 Second tile y-coordinate
+     * @return true if the swap results in a match, false otherwise
+     */
+    private boolean canSwapCreateMatch(int x1, int y1, int x2, int y2) {
+        Tile tile1 = board.getTileAt(x1, y1);
+        Tile tile2 = board.getTileAt(x2, y2);
+
+        if (tile1 == null || tile2 == null) {
+            return false;
+        }
+
+        Block block1 = tile1.getContainingBlock();
+        Block block2 = tile2.getContainingBlock();
+
+        if (block1 == null || block2 == null) {
+            return false;
+        }
+
+        // temp swap the blocks
+        tile1.setContainingBlock(block2);
+        tile2.setContainingBlock(block1);
+
+        boolean result = anyMatches(checkMatches());
+
+        // swap back
+        tile1.setContainingBlock(block1);
+        tile2.setContainingBlock(block2);
+
+        return result;
     }
 
     /**
