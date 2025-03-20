@@ -1,5 +1,8 @@
 package org.openjfx.inf122finalproject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -7,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -22,9 +27,67 @@ public class BoardView extends Application {
     private Text gameOverText;
     private GameManager gameManager;
 
+    private Map<String, String> userToPass;
+    private String currUser;
+    private Label incorrectPass;
+
     @Override
     public void start(Stage primaryStage) {
-        showMenu(primaryStage);
+        prepareLoginScreen(primaryStage);
+    }
+
+    private void prepareLoginScreen(Stage primaryStage) {
+        userToPass = new HashMap<>();
+        incorrectPass = new Label();
+
+        showLoginScreen(primaryStage);
+    }
+
+    private void showLoginScreen(Stage primaryStage) {
+        Button logInButton = new Button("Log In");
+
+        TextField userField = new TextField();
+        userField.setAlignment(Pos.CENTER);
+        PasswordField passField = new PasswordField();
+        passField.setAlignment(Pos.CENTER);
+
+        logInButton.setOnAction(e -> processLogin(primaryStage, userField.getText(), passField.getText(), incorrectPass));
+
+        HBox button = new HBox(10, logInButton);
+        button.setAlignment(Pos.CENTER);
+
+        VBox loginLayout = new VBox(10,
+            new Label("Enter existing or new username:"), userField,
+            new Label("Enter password:"), passField,
+            button, incorrectPass);
+        loginLayout.setAlignment(Pos.CENTER);
+
+        Scene loginScene = new Scene(loginLayout, 400, 400);
+        primaryStage.setScene(loginScene);
+        primaryStage.setTitle("Log In");
+        primaryStage.show();
+    }
+
+    private void processLogin(Stage primaryStage, String userText, String passText, Label incorrectPass) {
+        boolean enterMenu = true;
+        
+        if (userToPass.containsKey(userText)) {
+            String actualPass = userToPass.get(userText);
+            if (!(actualPass.equals(passText))) {
+                enterMenu = false;
+            }
+        }
+        else {
+            userToPass.put(userText, passText);
+        }
+
+        if (enterMenu) {
+            showMenu(primaryStage);
+        }
+        else {
+            incorrectPass.setText("Incorrect password");
+            showLoginScreen(primaryStage);
+        }
     }
 
     private void showMenu(Stage primaryStage) {
