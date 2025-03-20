@@ -82,6 +82,7 @@ public class BoardView extends Application {
         }
 
         if (enterMenu) {
+            currUser = userText;
             showMenu(primaryStage);
         }
         else {
@@ -97,6 +98,7 @@ public class BoardView extends Application {
         gameTypeBox.setValue("Candy Crush");
 
         // Buttons for player selection
+        Label userLabel = new Label("User: " + currUser);
         Button onePlayerButton = new Button("1 Player");
         Button twoPlayerButton = new Button("2 Players");
 
@@ -107,6 +109,7 @@ public class BoardView extends Application {
         playerButtons.setAlignment(Pos.CENTER);
 
         VBox menuLayout = new VBox(10,
+                userLabel,
                 new Label("Select Game Mode:"), gameTypeBox,
                 new Label("Choose Number of Players:"), playerButtons
         );
