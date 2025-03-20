@@ -3,17 +3,34 @@ package org.openjfx.inf122finalproject;
 import java.awt.Point;
 import java.util.ArrayList;
 
+/**
+ * Represents a block in the game, which consists of multiple tiles and a defined shape.
+ */
 public class Block {
     private ArrayList<Tile> containingTiles;
     private BlockType blockType;
     private Point centreOfMass;
 
+    /**
+     * Constructs a Block with the given type and center position.
+     *
+     * @param blockType The type of block, defining its shape and behavior
+     * @param centerX   The x-coordinate of the block's center
+     * @param centerY   The y-coordinate of the block's center
+     */
     public Block(BlockType blockType, int centerX, int centerY) {
         this.blockType = blockType;
         this.centreOfMass = new Point(centerX, centerY);
         this.containingTiles = new ArrayList<>();
     }
 
+    /**
+     * Attempts to place the block on the board.
+     * The block is placed based on its defined shape.
+     *
+     * @param board The game board on which the block is placed
+     * @return true if the block was placed successfully, false if it overlaps with existing blocks
+     */
     public boolean placeBlock(Board board) {
         if (isOutOfBounds(board)) {
             return false;
@@ -21,7 +38,6 @@ public class Block {
         int[][] shape = blockType.getRotationStates();
         int shapeRows = shape.length;
         int shapeCols = shape[0].length;
-
 
         int originX = centreOfMass.x;
         int originY = centreOfMass.y;
@@ -35,9 +51,8 @@ public class Block {
                     if (tile != null && tile.getContainingBlock() == null) {
                         containingTiles.add(tile);
                         tile.setContainingBlock(this);
-                    }
-                    else {
-                        //We cannot place the block as there is an existing block in the tile(s)
+                    } else {
+                        // Block placement fails due to existing block presence
                         return false;
                     }
                 }
@@ -45,13 +60,26 @@ public class Block {
         }
         return true;
     }
+
+    /**
+     * Removes the block from the board, clearing its tiles.
+     *
+     * @param board The game board from which the block is removed
+     */
     public void removeBlock(Board board) {
         for (Tile tile : containingTiles) {
             tile.setContainingBlock(null);
         }
         containingTiles.clear();
     }
-   private boolean isOutOfBounds(Board board) {
+
+    /**
+     * Checks if the block is out of bounds of the board.
+     *
+     * @param board The game board to check against
+     * @return true if the block is out of bounds, false otherwise
+     */
+    private boolean isOutOfBounds(Board board) {
         BlockType type = this.getBlockType();
         int effectiveWidth = type.getEffectiveWidth();
         int effectiveHeight = type.getEffectiveHeight();
@@ -64,10 +92,20 @@ public class Block {
                 originCol + effectiveWidth > board.getBoardWidth());
     }
 
+    /**
+     * Returns the block type.
+     *
+     * @return The BlockType of this block
+     */
     public BlockType getBlockType() {
         return blockType;
     }
 
+    /**
+     * Returns the center of mass of the block.
+     *
+     * @return A Point representing the block's center position
+     */
     public Point getCentreOfMass() {
         return centreOfMass;
     }
