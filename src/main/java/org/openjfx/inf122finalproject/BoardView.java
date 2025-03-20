@@ -37,6 +37,7 @@ public class BoardView extends Application {
     }
 
     private void prepareLoginScreen(Stage primaryStage) {
+        // Prepares member variables for the login screen
         userToPass = new HashMap<>();
         incorrectPass = new Label();
 
@@ -56,6 +57,7 @@ public class BoardView extends Application {
         HBox button = new HBox(10, logInButton);
         button.setAlignment(Pos.CENTER);
 
+        // Asks the user to enter their username and password
         VBox loginLayout = new VBox(10,
             new Label("Enter existing or new username:"), userField,
             new Label("Enter password:"), passField,
@@ -71,21 +73,29 @@ public class BoardView extends Application {
     private void processLogin(Stage primaryStage, String userText, String passText, Label incorrectPass) {
         boolean enterMenu = true;
         
+        // If the username already exists on record
         if (userToPass.containsKey(userText)) {
             String actualPass = userToPass.get(userText);
+
+            // If the inputted password doesn't match the password on record,
+            // it returns back to the login screen
             if (!(actualPass.equals(passText))) {
                 enterMenu = false;
             }
         }
+        // If the username doesn't exist, add a new username / password pair to the record
         else {
             userToPass.put(userText, passText);
         }
 
         if (enterMenu) {
+            // Goes to the menu screen
             currUser = userText;
             showMenu(primaryStage);
         }
         else {
+            // When going back to the login screen,
+            // a text shows an incorrect password message
             incorrectPass.setText("Incorrect password");
             showLoginScreen(primaryStage);
         }
@@ -97,8 +107,10 @@ public class BoardView extends Application {
         gameTypeBox.getItems().addAll("Candy Crush", "Tetris");
         gameTypeBox.setValue("Candy Crush");
 
-        // Buttons for player selection
+        // Show the current username
         Label userLabel = new Label("User: " + currUser);
+
+        // Buttons for player selection
         Button onePlayerButton = new Button("1 Player");
         Button twoPlayerButton = new Button("2 Players");
 
