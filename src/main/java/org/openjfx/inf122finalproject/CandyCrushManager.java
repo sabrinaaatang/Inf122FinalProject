@@ -88,12 +88,12 @@ public class CandyCrushManager extends GameManager {
         int boardWidth = board.getBoardWidth();
         int boardHeight = board.getBoardHeight();
         for (int col = 0; col < boardWidth; col++) {
-            boolean placed = true;
-            while (placed) {
+            CantPlaceErrorType type = CantPlaceErrorType.NO_ERR;
+            while (type == CantPlaceErrorType.NO_ERR ) {
                 BlockType blockType = BlockFactory.createBlock("Candy");
                 Block block = new Block(blockType, col, 0);
-                placed = block.placeBlock(board);
-                if (placed) {
+                type = block.placeBlock(board);
+                if (type == CantPlaceErrorType.NO_ERR ) {
                     newBlocksAdded = true;
                     compactOneColumn(col, boardHeight);
                 }
