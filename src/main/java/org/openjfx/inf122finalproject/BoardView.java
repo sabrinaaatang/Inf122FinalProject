@@ -203,6 +203,7 @@ public class BoardView extends Application {
         gameManager = gameType.equals("Candy Crush") ? new CandyCrushManager(board) : new TetrisManager(board);
 
         Scene gameScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        primaryStage.setResizable(false);
 
         gameScene.setOnMousePressed(this::handleMousePress);
         gameScene.setOnMouseReleased(this::handleMouseRelease);

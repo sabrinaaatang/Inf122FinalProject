@@ -109,12 +109,19 @@ public class CandyCrushManager extends GameManager {
      */
     @Override
     public void handleInput(PlayerInput input) {
+        int tileSize = board.getTileSize();
+        int row = 10; int col = 10;
+        int gameWindowSize = tileSize * row;
+        final int WINDOW_WIDTH = 1000;
+        final int XShift = (1000 - gameWindowSize) / 2;
+        final int YShift = (750 - gameWindowSize) / 2;
+
         if (input.getSource() == PlayerInput.InputSource.MOUSE) {
-            int tileSize = board.getTileSize();
-            int startTileX = (int) (input.getStartX() / tileSize);
-            int startTileY = (int) (input.getStartY() / tileSize);
-            int endTileX = (int) (input.getEndX() / tileSize);
-            int endTileY = (int) (input.getEndY() / tileSize);
+
+            int startTileX = (int) ( (input.getStartX() - XShift) / tileSize);
+            int startTileY = (int) ((input.getStartY() - YShift) / tileSize);
+            int endTileX = (int) ( (input.getEndX() - XShift) / tileSize);
+            int endTileY = (int) ((input.getEndY() - YShift) / tileSize);
 
             int targetX = 0;
             int targetY = 0;
