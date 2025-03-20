@@ -35,6 +35,7 @@ public class BoardView extends Application {
     private Map<String, String> userToPass;
     private String currUser;
     private Label incorrectPass;
+    private Button returnToMenuButton;
 
     private int numPlayers = 1; // Default to 1 player
     private int currentPlayer = 1; // Start with Player 1
@@ -171,8 +172,8 @@ public class BoardView extends Application {
      * @param gameType The type of game being played
      */
     private void launchGame(Stage primaryStage, String gameType) {
-        int width = 5;
-        int height = 5;
+        int width = 10;
+        int height = 10;
         int tileSize = 50;
 
         Board board = new Board(tileSize);
@@ -187,10 +188,15 @@ public class BoardView extends Application {
         gameOverText.setFill(Color.RED);
         gameOverText.setVisible(false);
 
+        returnToMenuButton = new Button("Return to Menu");
+        returnToMenuButton.setFont(new Font(20));
+        returnToMenuButton.setVisible(false);
+        returnToMenuButton.setOnAction(e -> showMenu(primaryStage)); // Go back to the menu
+
         StackPane boardContainer = new StackPane(board);
         boardContainer.setAlignment(Pos.CENTER);
 
-        VBox root = new VBox(10, scoreLabel, boardContainer, gameOverText);
+        VBox root = new VBox(10, scoreLabel, boardContainer, gameOverText, returnToMenuButton);
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: #333;");
 
@@ -225,11 +231,12 @@ public class BoardView extends Application {
                     gameOverText.setVisible(true);
                     gameLoop.stop();
 
-                    // If it's Player 1 and there's a Player 2, delay transition
+                    javafx.application.Platform.runLater(() -> returnToMenuButton.setVisible(true));
+
+                    // if it's Player 1 and there's a Player 2, delay transition
                     if (numPlayers == 2 && currentPlayer == 1) {
                         currentPlayer = 2; // Switch to Player 2
 
-                        // Store window position and size before switching
                         double windowX = primaryStage.getX();
                         double windowY = primaryStage.getY();
                         double windowWidth = primaryStage.getWidth();
@@ -237,7 +244,7 @@ public class BoardView extends Application {
 
                         new Thread(() -> {
                             try {
-                                Thread.sleep(2000); // Wait 2 seconds before switching
+                                Thread.sleep(2000); // wait 2 seconds before switching
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -245,7 +252,7 @@ public class BoardView extends Application {
                             javafx.application.Platform.runLater(() -> {
                                 showReadyScreen(primaryStage, gameType, 2);
 
-                                // Restore window position and size
+                                // restore window position and size
                                 primaryStage.setX(windowX);
                                 primaryStage.setY(windowY);
                                 primaryStage.setWidth(windowWidth);
@@ -258,6 +265,7 @@ public class BoardView extends Application {
         };
         gameLoop.start();
     }
+
 
 
     private void showReadyScreen(Stage primaryStage, String gameType, int playerNumber) {
