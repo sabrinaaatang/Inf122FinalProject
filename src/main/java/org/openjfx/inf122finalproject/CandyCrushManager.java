@@ -244,33 +244,7 @@ package org.openjfx.inf122finalproject;
 
         @Override
         public boolean isGameOver() {
-            int boardWidth = board.getBoardWidth();
-            int boardHeight = board.getBoardHeight();
-
-            if (anyMatches(checkMatches())) {
-                return false; // game is not over if there are still matches available
-            }
-
-            // check for possible valid swaps that can create a match
-            for (int row = 0; row < boardHeight; row++) {
-                for (int col = 0; col < boardWidth; col++) {
-                    // check horizontal swap
-                    if (col < boardWidth - 1) {
-                        if (isValidSwap(col, row, col + 1, row)) {
-                            return false; // game is not over if a swap is valid
-                        }
-                    }
-                    // check vertical swap
-                    if (row < boardHeight - 1) {
-                        if (isValidSwap(col, row, col, row + 1)) {
-                            return false; // game is not over if a swap is valid
-                        }
-                    }
-                }
-            }
-
-            // if no valid swaps are found, game is over
-            return true;
+            return false;
         }
 
 
